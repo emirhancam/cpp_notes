@@ -13,9 +13,9 @@
 - Bu durum güçlü avantajlar sağlar ancak bazı riskleri de vardır.
 
 ## 2. Neden Thread Kullanılır ?
-**Daha İyi Tepki Verebilirlik** : Bir GUI uygulamasında bir thread kullanıcı girişlerini işlerken, başka bir thread arka plandaki işleri yapabilir. Böylece arayüz donmadan çalışmaya devam edilir.
-**Paralellik** : Birden fazla thread farklı CPU çekirdeklerinde çalışabilir .Bu sayede çok çekirdekli işlemciler daha verimli kullanılır.
-**Kaynak Paylaşımı** : Aynı process içindeki threadler kaynakları paylaşır. Bu da processlere kıyasla daha düşük maliyetli bir yapı sağlar.
+- **Daha İyi Tepki Verebilirlik** : Bir GUI uygulamasında bir thread kullanıcı girişlerini işlerken, başka bir thread arka plandaki işleri yapabilir. Böylece arayüz donmadan çalışmaya devam edilir.
+- **Paralellik** : Birden fazla thread farklı CPU çekirdeklerinde çalışabilir .Bu sayede çok çekirdekli işlemciler daha verimli kullanılır.
+- **Kaynak Paylaşımı** : Aynı process içindeki threadler kaynakları paylaşır. Bu da processlere kıyasla daha düşük maliyetli bir yapı sağlar.
 - Ancak bu kadar güç, büyük sorumluluk getirir. Threadler ile çalışmak, **senkronizasyon** ve **veri tutarlılığı** gibi bazı karmaşıklıkları da beraberinde getirir.
 
 ## 3. C++ Thread Kütüphanesi
