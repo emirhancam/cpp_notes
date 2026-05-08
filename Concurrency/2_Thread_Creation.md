@@ -11,7 +11,7 @@
 #include <thread>
 
 void hello() {
-    std::cout << "Hello from a thread! << std::endl;
+    std::cout << "Hello from a thread!" << std::endl;
 }
 
 int main() {
