@@ -71,7 +71,16 @@ int main() {
 - Her thread kendine ait mesajı ekrana yazdırır.
 - Bu  örnek, aynı kodu paylaşan ancak farklı verilerle çalışan birden fazla thread'in nasıl oluşturulabileceğini gösterir.
 
+## 4. Thread Yaşam Döngüsü
+- Bir thread birkaç farklı durumda olabilir:
+  
+**1. New:** Thread oluşturulmuştur ancak henüz başlatılmamıştır.
 
+**2. Runnable:** Thread çalışmaya hazırdır ve CPU zamanı bekliyordur.
+
+**3. Blocked:** Thread, başka bir thread tarafından tutulan bir kaynağı bekliyordur. Örneğin bir `mutex` bekliyor olabilir.
+
+**4. Terminated:** Thread çalışmasını tamamlamıştır.
 
 
 
