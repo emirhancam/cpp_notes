@@ -46,3 +46,39 @@ int main() {
 - Ardından çalıştırılacak fonksiyon olarak **printHello** fonksiyonunu vererek **t** adında bir thread nesnesi oluşturduk.
 - **join()** metodu, program sonlanmadan önce ana thread'in **t** thread'inin bitmesini beklemesini sağlamak için çağrılır.
 
+### Thread Parametreleri
+- Thread'ler parametre de alabilir. Bir thread fonksiyonuna argümanları nasıl geçirdiğimize bakalım:
+  ```cpp
+  #include <iostream>
+  #include <thread>
+
+  void printMessage(int id, const std::string& message) {
+      std::cout << "Thread " << id << ": " << message << std::endl;
+  }
+
+  int main() {
+      std::thread t1(printMessage, 1, "Hello from thread 1");
+      std::thread t1(printMessage, 2, "Hello from thread 2");
+
+      t1.join();
+      t2.join();
+
+      return 0;
+  }
+  ```
+
+- Burada thread fonksiyonuna integer ve string gönderiyoruz.
+- Her thread kendine ait mesajı ekrana yazdırır.
+- Bu  örnek, aynı kodu paylaşan ancak farklı verilerle çalışan birden fazla thread'in nasıl oluşturulabileceğini gösterir.
+
+
+
+
+
+
+
+
+
+
+
+
