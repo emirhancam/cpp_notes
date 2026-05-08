@@ -42,9 +42,9 @@ int main() {
     return 0;
 }
 ```
-- Bu örnekte, sadece ekrana bir mesaj yazdıran **printHello** adlı fonksiyonu tanımladık.
-- Ardından çalıştırılacak fonksiyon olarak **printHello** fonksiyonunu vererek **t** adında bir thread nesnesi oluşturduk.
-- **join()** metodu, program sonlanmadan önce ana thread'in **t** thread'inin bitmesini beklemesini sağlamak için çağrılır.
+- Bu örnekte, sadece ekrana bir mesaj yazdıran `printHello` adlı fonksiyonu tanımladık.
+- Ardından çalıştırılacak fonksiyon olarak `printHello` fonksiyonunu vererek `t` adında bir thread nesnesi oluşturduk.
+- `join()` metodu, program sonlanmadan önce ana thread'in `t` thread'inin bitmesini beklemesini sağlamak için çağrılır.
 
 ### Thread Parametreleri
 - Thread'ler parametre de alabilir. Bir thread fonksiyonuna argümanları nasıl geçirdiğimize bakalım:
@@ -82,9 +82,22 @@ int main() {
 
 **4. Terminated:** Thread çalışmasını tamamlamıştır.
 
+- Bu yaşam döngüsünü akılda tutmak özellikle kaynak yönetimi yaparken önemlidir.
+- Örneğin, bir thread süresiz olarak blocked durumda kalırsa, bu darboğazlara yol açabilir.
 
+### C++'ta Thread Durumları
+- C++, thread durumlarını yönetmemize yardımcı olabilecek fonksiyonlar sağlar.
+- Bir thread'in `joinable` olup oolmadığını kontrol edebiliriz.
+- Bu, thread'in `join` veya `detach` edilebilir durumda olduğu anlamına gelir.
 
+  
+```cpp
+if (t.joinable()) {
+    t.join();
+}
+```
 
+- Bu kontrol önemlidir, çünkü **joinable olmayan** bir thread'e `join()` çağırmaya çalışmak tanımsız davranışa (UB) yol açar.
 
 
 
