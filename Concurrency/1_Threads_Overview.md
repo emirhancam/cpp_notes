@@ -99,8 +99,55 @@ if (t.joinable()) {
 
 - Bu kontrol önemlidir, çünkü **joinable olmayan** bir thread'e `join()` çağırmaya çalışmak tanımsız davranışa (UB) yol açar.
 
+## 5. Thread Güvenliği ve Zorluklar
+- Threadler uygulama performansını önemli ölçüde artırabilir.
+- Ancak bunun yanında özellikle thread safety konusunda bazı zorlukları da getirir.
+- Birden fazla thread aynı anda paylaşılan kaynaklara eriştiğinde, **data race** gibi problemlerle karşılaşma riski oluşur.
+- Data race durumunda programın sonucu, threadlerin hangi sırada ve hangi anda çalıştığına bağlı hale gelir.
 
+### Data Race
+- Bir data race, 2 veya daha fazla threadin aynı anda paylaşılan veriye erişmesi ve bu threadlerden en az birinin o veriyi değiştirmesi durumunda oluşur.
+- Örnek ile inceleyelim:
 
+  ```cpp
+  #include <iostream>
+  #include <thread>
 
+  int counter = 0;
 
+  void increment() {
+      for(int i = 0; i < 100000; ++i) {
+          ++counter; //Potansiyel data race
+      }
+  }
 
+  int main() {
+      std::thread t1(increment);
+      std::thread t2(increment);
+
+      t1.join();
+      t2.join();
+
+      std::cout << "Final counter value: " << counter << std::endl; // UB
+      return 0;
+  }  
+  ```
+
+- Bu örnekte iki thread, herhangi bir senkronizasyon olmadan aynı `counter` değişkenini artırıyor. Bu durum **race condition** oluşmasına neden olur.
+- Sonuç olarak `counter` değişkeninin son değeri tahmin edilemez hale gelir ve programın farklı çalıştırmalarında farklı sonuçlar görülebilir.
+
+### Çözümler
+- Bu sorunları azaltmak için `mutex` gibi senkronizasyon mekanizmaları kullanmamız gerekir.
+
+- Şimdilik önemli olan nokta, C++'ta eşzamanlı programlama yaparken **thread safety**, tasarım aşamasında düşünülmesi gereken bir konudur.
+
+## 6. Pratikte Dikkat Edilmesi Gerekenler
+- Thread kullanan sistemler tasarlarken aşağıdaki uygulamaları göz önünde bulundurmalıyız:
+- **Paylaşılan Durumu Azalt**: Mümkün oldukça threadlerin ortak veri paylaşmak yerine kendi verileri üzerinde çalışmasını sağlamalıyız. 
+- **Thread Pool Kullan** : Sık sık thread oluşturmayı gereken uygulamalarda worker threadleri verimli şekilde yönetmek için thread pool kullanılmalıdır.
+
+## 7. Gerçek Dünya Uygulamaları
+- Threadler birçok alanda kullanılır:
+- ** Web Sunucuları **: Aynı anda birden fazla client isteğini işler.
+- ** Oyun Geliştirme **: Render işlemlerini, kullanıcı girişlerini ve oyun mantığını paralel şekilde yönetir.
+- ** Veri İşleme **: Ağır hesaplamaları veya veri dönüşümlerini eşzamanlı olarak gerçekleştirir. 
