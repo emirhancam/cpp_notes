@@ -11,6 +11,13 @@
 
 - Bu, thread tarafından hala kullanılıyor olabilecek kaynaklara erişim gibi sorunları önleyecektir.
 
+### Ne Zaman `join()` Kullanılır ?
+- Ana program devam etmeden önce bir threadin görevini tamamladığından emin olmamız gerekiyorsa `join()` kullanmalıyız.
+- Bu özellikle şu durumlarda önemlidir:
+   1) Thread paylaşılan veriyi güncelliyorsa
+   2) Hesaplama yapıyorsa
+   3) Kritik bir işi yürütüyorsa
+
 
 
 
