@@ -155,10 +155,32 @@ First thread joined, second thread detached.
 - Bu, programın ilk threadin hesaplamasını bitmesini beklemesini sağlar. Fakat ikinci thread bağımsız olarak çalışmaya devam eder.
 - Ancak yine de ikinci threadin çıktısını görebilmek için main threadin yeterince uzun süre canlı kalmasını sağlamamız gerekir. 
 
+## Yaygın Hatalar ve En İyi Pratikler
+- Kaçınılması gereken yaygın hatalar şunlardır:
+    1) **Join Etmeyi Unutmak** : Bir thread oluşturup onu ne `join` ne de `detach` edersek, programımız hata ile sonlanır. Her thread'in mutlaka `join` veya `detach` edildiğinden emin olunmalı.
+    2) **Detach threadlere erişmeye çalışmak** : Bir thread detach edildikten sonra ona tekrar `join` yapılamaz ve sonucuna erişmek mümkün değildir. Bu durum kaybolan hesaplamalara veya hatalara yol açabilir. 
+    3) **Erken Sonlanma** : Main thread, detached thread bitmeden önce sonlanırsa, program detached threadin kodunu çalıştırmadan kapanabilir. Bunu azaltmak için senkronizasyon teknikleri veya condition variable kullanılabilir. 
 
+```cpp
+#include <iostream>
+#include <thread>
 
+void task() {
+    std::cout << "Doing some work..." << std::endl;
+}
 
+int main() {
+    std::thread t(task);
 
+    // Join veya detach etmeyi unutmak std::terminate çağrılmasına neden olur
+
+    return 0; // Program join veya detach yapılmadan sonlanır
+}
+```
+Çıktı:
+```text
+terminate called without an active exception
+```
 
 
 
