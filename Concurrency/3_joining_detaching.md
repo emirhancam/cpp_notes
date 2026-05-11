@@ -6,7 +6,7 @@
 
 ## Join Etmenin Temelleri
 
-- Bir thread üzerinde `**join()**` çağırdığımızda, programa aslında şunu söylemiş oluyoruz:  
+- Bir thread üzerinde `join()` çağırdığımızda, programa aslında şunu söylemiş oluyoruz:  
   *"Devam etmeden önce bu thread'in çalışmasını bitirmesini bekle."*
 
 - Bu, thread tarafından hala kullanılıyor olabilecek kaynaklara erişim gibi sorunları önleyecektir.
