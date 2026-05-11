@@ -18,6 +18,39 @@
    2) Hesaplama yapıyorsa
    3) Kritik bir işi yürütüyorsa
 
+```cpp
+#include <iostream>
+#include <thread>
 
+void printNumbers() {
+   for (int i = 0; i < 5; ++i) {
+       std::cout << "Number: " << i << std::endl;
+   }
+}
 
+int main() {
+   std::thread t(printNumbers); // Yeni thread başlatıyoruz.
+   t.join();                    // Threadin bitmesini bekliyoruz.
 
+   std::cout << "Thread has finished execution." << std::endl;
+   return 0;
+}
+```
+Çıktı
+
+```text
+Number: 0
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Thread has finished execution.
+```
+- Bu örnekte `main thread`, son mesajı yazdırmadan önce `t` threadinin çalışmasını bitirmesini bekler.
+- Bu kritik bir noktadır. Çünkü eğer `t.join()` çağırmasaydık, ana program thread tamamlanmadan önce sonlanabilirdi.
+- Yukarıdaki örnekte `t.join()` kısmını yorum satırına alıp kodu çalıştırdığımızda elde edilen çıktı:
+
+```text
+Thread has finished execution.
+terminate called without an active exception
+```
