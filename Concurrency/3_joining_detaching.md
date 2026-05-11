@@ -5,10 +5,11 @@
 - İşte burada **joining** ve **detaching** devreye giriyor. Bu iki mekanizma, threadlerin çalışmasının tamamlandıktan sonra nasıl davranacağını kontrol ederler.
 
 ## Join Etmenin Temelleri
-- Bir thread üzerinde **join()** çağırdığımızda, programa aslında şunu söylemiş oluyoruz:
-    *"Devam etmeden önce bu thread'in çalışmasını bitirmesini bekle."*
-  
-- Bu, thread tarafından hala kullanılıyor olabilecek kaynaklara erişim gibi sorunları önleyecektir. 
+
+- Bir thread üzerinde `**join()**` çağırdığımızda, programa aslında şunu söylemiş oluyoruz:  
+  *"Devam etmeden önce bu thread'in çalışmasını bitirmesini bekle."*
+
+- Bu, thread tarafından hala kullanılıyor olabilecek kaynaklara erişim gibi sorunları önleyecektir.
 
 
 
