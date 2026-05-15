@@ -162,9 +162,56 @@ Locking count: 1
 - Yine de küçük not: `recursive_mutex` her zaman ilk tercih olmamalı. Çoğu durumda kod tasarımını sadeleştirip normal `std::mutex` kullanmak daha sağlıklıdır.
 - `resursive_mutex`, gerçekten iç içe kilitleme ihtiyacı varsa düşünülmelidir. 
 
+### std::timed_mutex
+- `std::timed_mutex, bir mutexi belirli bir süre içinde kilitlemeyi denememize olanak sağlar.
+- Bu, mutex uygun değilse threadlerin sonsuza kadar beklemesini önlemeye yardımcı olur.
 
+```cpp
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
 
+std::timed_mutex tmtx;
 
+void tryLock()
+{
+    if (tmtx.try_lock_for(std::chrono::milliseconds(100)))
+    {
+        std::cout << "Locked successfully!" << std::endl;
+        tmtx.unlock();
+    }
+    else
+    {
+        std::cout << "Could not lock, trying later." << std::endl;
+    }
+}
+
+int main()
+{
+    std::thread t1(tryLock);
+    t1.join();
+    return 0;
+}
+```
+Çıktı:
+```text
+Locked successfully!
+```
+
+- Bu örnekte ``std::timed_mutex kullanıyoruz. Normal `std::mutex` ile şunu yaparız: `mtx.lock();`. Bu çağrı mutex boşalana kadar bekler.
+- Ama `std::timed_mutex` ile şunu diyebiliriz : *"Bu mutexi kilitlemeyi 100 milisaniye boyunca dene. Eğer alamazsan vazgeç."*
+- Eğer mutex alınabilirse *Locked successfully!* . Eğer 100ms içinde alınamazsa *Could not lock, trying later.*
+- Bu yapı özellikle threadin sonsuza kadar beklemesini istemediğimiz durumlarda işe yarar.
+- Örneğin zaman aşımı gereken işlemler, servis uygulamaları, arka plan worker threadleri veya sistemin takılı kalmasını istemediğimiz kritik uygulamalarda kullanılabilir.
+
+## Mutex Kullanımı için En İyi Uygulamalar
+- Mutexler güçlü araçlardır. Ancak etkili şekilde kullanılmaları dikkat gerektirir..
+  **1) Kilit Kapsamının İyi Ayarlanması Gerekir** : 
+  **2) Deadlock'tan Kaçınmalıyız** : 
+  **3) RAII Kullanmalıyız** : 
+  **4) Kilit Kapsamını Küçük Tutmalıyız** : 
+  **5) Alternatifleri Düşünmeliyiz** : 
 
 
 
