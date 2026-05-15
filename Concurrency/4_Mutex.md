@@ -206,12 +206,12 @@ Locked successfully!
 - Örneğin zaman aşımı gereken işlemler, servis uygulamaları, arka plan worker threadleri veya sistemin takılı kalmasını istemediğimiz kritik uygulamalarda kullanılabilir.
 
 ## Mutex Kullanımı için En İyi Uygulamalar
-- Mutexler güçlü araçlardır. Ancak etkili şekilde kullanılmaları dikkat gerektirir..
-  **1) Kilit Kapsamının İyi Ayarlanması Gerekir** : 
-  **2) Deadlock'tan Kaçınmalıyız** : 
-  **3) RAII Kullanmalıyız** : 
-  **4) Kilit Kapsamını Küçük Tutmalıyız** : 
-  **5) Alternatifleri Düşünmeliyiz** : 
+- Mutexler güçlü araçlardır. Ancak etkili şekilde kullanılmaları dikkat gerektirir..   
+  **1) Kilit Kapsamının İyi Ayarlanması Gerekir** :    
+  **2) Deadlock'tan Kaçınmalıyız** :    
+  **3) RAII Kullanmalıyız** :    
+  **4) Kilit Kapsamını Küçük Tutmalıyız** :    
+  **5) Alternatifleri Düşünmeliyiz** :    
 
 
 
