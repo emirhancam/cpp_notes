@@ -51,13 +51,13 @@ Final value of sharedResource: 2
 - İleriki aşamada şunu göreceğiz: Gerçek projelerde `lock()` ve `unlock()` doğrudan elle kullanılmaz. Daha güvenli olması için genelde `std::lock_guard` tercih edilir.
 
 ## Neden Mutex Kullanıyoruz ? 
-- Çok threadli herhangi bir uygulamada mutex kullanmak birkaç önemli nedenden dolayı kritiktir:
+- Çok threadli herhangi bir uygulamada mutex kullanmak birkaç önemli nedenden dolayı kritiktir:   
   **1) Race Conditionları önlemek** : Birden fazla thread aynı anda paylaşılan veriye erişip onu değiştirdiğinde, threadler birbirinin işlemini bozabilir. Bu da tutarsız veya geçersiz veriye yol açabilir.  Mutexler, bu veriye erişimi sıraya koyarak race condition oluşmasını önlemeye yardımcı olur.
   **2) Veri bütünlüğünü korumak** : Mutexler, paylaşılan kaynaklara erişimi kontrol ederek verinin geçerli bir durumda kalmasını sağlar. Örneğin, iki thread aynı anda paylaşılan bir değişkene yazmaya çalışırsa, mutex olmadan bozulmuş bir değerle karşılaşabiliriz.
   **3) Deadlock önleme konusunda farkındalık sağlamak** : Mutexler dikkatli yönetilmezse deadlock'a yol açabilir. Ancak mutex kullanımını iyi anlamak, 2 veya daha fazla threadin sonsuza kadar birbirini beklediği durumları önleyecek sistemler tasarlanmasına yardımcı olur.
 
 - Şimdi mutexlerin race conditionları nasıl etkili şekilde önleyebileceğini gösteren bir örneğe bakalım:
-```
+```cpp
 #include <iostream>
 #include <thread>
 #include <mutex>
