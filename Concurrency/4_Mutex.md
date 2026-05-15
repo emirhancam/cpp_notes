@@ -207,11 +207,16 @@ Locked successfully!
 
 ## Mutex Kullanımı için En İyi Uygulamalar
 - Mutexler güçlü araçlardır. Ancak etkili şekilde kullanılmaları dikkat gerektirir..   
-  **1) Kilit Kapsamının İyi Ayarlanması Gerekir** :    
-  **2) Deadlock'tan Kaçınmalıyız** :    
-  **3) RAII Kullanmalıyız** :    
-  **4) Kilit Kapsamını Küçük Tutmalıyız** :    
-  **5) Alternatifleri Düşünmeliyiz** :    
+  **1) Kilit Kapsamının İyi Ayarlanması Gerekir** : Mümkün olduğunda ince taneli kilitlemeler yapmalıyız. Yani sadece korunması gereken kaynakları kilitlemek. Bu, threadler arasındaki bekleme süresini azaltır ve performansa doğrudan katkı sağlar.
+     
+  **2) Deadlock'tan Kaçınmalıyız** : Birden fazla kilit almamız gerekiyorsa, kilitleri her zaman tutarlı bir sayıyla almalıyız. Program genelinde aynı sırayı kullanmak deadlock riskini azaltır.
+      
+  **3) RAII Kullanmalıyız** : Mutexi elle `lock` ve `unlock` yapmak yerine, kilitlerin otomatik yönetimini tercih etmeliyiz. Bunun için `std::lock_guard` veya `std::unique_lock` kullanabiliriz.
+     
+  **4) Kilit Kapsamını Küçük Tutmalıyız** : Kilitli kod bölümlerini mümkün olduğunda kısa tutmalıyız. Bu, diğer threadlerin kilidi bekleme süresini azaltır ve genel eşzamanlılığı artırır.
+     
+  **5) Alternatifleri Düşünmeliyiz** : Bazı durumlarda atomik işlemler veya daha üst seviye senkronizasyon mekanizmaları, örneğin condition variable, mutexlerden daha verimli olabilir.
+
 
 
 
