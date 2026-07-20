@@ -1,7 +1,5 @@
 # C++ Notlarım
 
-> Ders 1–24: ana not defterinden; Ders 25–34: ayrı ders dosyalarından birleştirildi.
-
 <a id="icindekiler"></a>
 ## İçindekiler
 
