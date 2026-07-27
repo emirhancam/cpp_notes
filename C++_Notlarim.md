@@ -755,7 +755,7 @@ void process_date(int day = -1, int mon = -1, int year = -1)
 
 - C++da bir değişkeni başlatmak ona değer atamaktır.
 - Bu başlatma işlemi farklı yollarla yapılabilir;
-- **Copy Initialization**
+### **Copy Initialization**
 
 \- Değişkeni ilk kez tanımlarken bir değer atayıp başlamaktır.
 
@@ -765,7 +765,7 @@ void process_date(int day = -1, int mon = -1, int year = -1)
 
 std::string name = "Alice";
 
-- **Direct Initialization**
+### **Direct Initialization**
 
 \- Başlatma sırasında () kullanarak doğrudan başlatma yapılır.
 
@@ -775,7 +775,7 @@ std::string name = "Alice";
 
 string greeting("Hello");
 
-- **Uniform Initialization**
+### **Uniform Initialization**
 
 \- C++11 ile dile eklendi.
 
@@ -826,12 +826,14 @@ Point p1{10, 20};  // Point nesnesi, x = 10 ve y = 20 ile başlatıldı
 
 \- Bu tür bir dönüşüm her zaman güvenlidir ancak veri kaybına neden olabilir. (double’dan int’e dönüşüm)
 
-**Örnek:** 	int a = 5;
-
+**Örnek:** 	
+```cpp
+int a = 5;
 double b = a;  // 'a' otomatik olarak double'a dönüştürüldü
+```
 
-- **Explicit Type Casting**
-  - **static_cast**
+### **Explicit Type Casting**
+#### **static_cast**
 
 \- Güvenli ve bilinen tür dönüşümler için kullanılır.
 
@@ -842,26 +844,21 @@ double b = a;  // 'a' otomatik olarak double'a dönüştürüldü
 \- Void* den T* a dönüşüm static_cast ile yapılır.
 
 **Örnek:**
-
+```cpp
 double pi = 3.14159;
-
 int approx_pi = `static_cast<int>(pi);`
+```
 
 **Örnek:**
-
+```cpp
 enum DeviceState {ON, OFF, HOLD, STANDBY};
-
 DeviceState stm32f407DeviceState = OFF;
-
 int main()
-
 {
-
-int y = `static_cast<int>(stm32f407DeviceState)` ;
-
+	int y = `static_cast<int>(stm32f407DeviceState)` ;
 }
-
-  - **dynamic_cast**
+```
+#### **dynamic_cast**
 
 \- Polymorphic türlerde, runtime’da güvenli dönüştürme yapmak için kullanılır.
 
@@ -870,12 +867,12 @@ int y = `static_cast<int>(stm32f407DeviceState)` ;
 \- Inheritance ile alakalı dönüşümlerde sık kullanılır. İleride ayrıntılı görülecek.
 
 **Örnek:**
-
+```cpp
 Base* basePtr = new Derived();
-
 Derived* derivedPtr = `dynamic_cast<Derived*>(basePtr);`
+```
 
-  - **const_cast**
+#### **const_cast**
 
 \- const niteliklerini kaldırmak veya eklemek için kullanılır.
 
@@ -887,7 +884,7 @@ const int num = 10;
 
 int* p = `const_cast<int*>(&num);`  // 'num' const nitelikten çıkarıldı
 
-  - **reinterpret_cast**
+#### **reinterpret_cast**
 
 \- Veri türlerini bit tabanında yeniden yorumlamak için kullanılır.
 
@@ -898,28 +895,20 @@ int* p = `const_cast<int*>(&num);`  // 'num' const nitelikten çıkarıldı
 **Örnek:** int* p = `reinterpret_cast<int*>(0x1234);`
 
 **Örnek:**
-
+```cpp
 struct Data
-
 {
-
-int mx, my, mz;
-
+	int mx, my, mz;
 };
 
 int main()
-
 {
-
-Data mydata = { 10,20,30 };
-
-//char* p = `static_cast<char*>(&mydata);` //SYNTAX HATASI
-
-char* p = `reinterpret_cast<char*>(&mydata);` // DOGRU CAST
-
-//data* --> char* cast islemi yapiliyor.
-
+	Data mydata = { 10,20,30 };
+	//char* p = `static_cast<char*>(&mydata);` //SYNTAX HATASI
+	char* p = `reinterpret_cast<char*>(&mydata);` // DOGRU CAST
+	//data* --> char* cast islemi yapiliyor.
 }
+```
 
 [↑ İçindekiler](#icindekiler)
 
