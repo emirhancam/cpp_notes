@@ -228,11 +228,11 @@
 #include <vector>
 int main() 
 {
-std::vector<int> vec = {1, 2, 3, 4, 5};
-    	for (int i : vec)
-{
-        	std::cout << i << " ";
-    	}
+	std::vector<int> vec = {1, 2, 3, 4, 5};
+    for (int i : vec)
+	{
+       	std::cout << i << " ";
+	}
     return 0;
 }
 ```
@@ -309,14 +309,14 @@ int *ptr = (int*) malloc(100); // C++da dogru.
 ```cpp
 struct Data
 {
-int x;
-int y;
+	int x;
+	int y;
 };
 
 int main()
 {
-struct Data mydata; //C de kullanım. typedef gerekli struct yazmamak icin.
-Data mydata; // C++da kullanım. Burada typedef e gerek yok.
+	struct Data mydata; //C de kullanım. typedef gerekli struct yazmamak icin.
+	Data mydata; // C++da kullanım. Burada typedef e gerek yok.
 }
 ```
 
@@ -337,7 +337,7 @@ ptr = x; 		// hatali islem. int ptr a int atanmaz.
 
 auto add(int a, int b) //fonksiyon argumani auto olamaz!!!
 {
-return a + b;
+	return a + b;
 }
 ```
 
@@ -349,14 +349,12 @@ return a + b;
 - C’deki pointerlara benzerler ancak daha basittir ve bellek adresiyle doğrudan uğraşmazlar.
 
 **Örnek:**
-
+```cpp
 int a = 10;
-
 int &ref = a;      // 'ref' artık 'a' değişkenine referans oldu.
-
 ref = 20;          // 'ref' üzerinden 'a' değiştirildi.
-
 std::cout << a;    // Çıktı: 20
+```
 
 **Örnek**:
 
@@ -379,9 +377,7 @@ cout << "y=" << y << "\n" ; // y = 45
 int x = 10;
 int &r = x;
 
-cout <<"&r = "<<&r<<" "<<"&x =" << &x;
-
-Aynı bellek alani. Adresleri ayni. r demek x demek.
+cout <<"&r = "<<&r<<" "<<"&x =" << &x; // &r = 0x7ffe75759564 &x =0x7ffe75759564 Aynı bellek alani. Adresleri ayni. r demek x demek.
 ```
 
 **Örnek:**
@@ -465,25 +461,25 @@ int& ref = a;   // Referans, a'nın kendisine işaret eder.
 ```cpp
 void increment(int& ref) //call by reference
 {
-ref++;  // Referans üzerinden orijinal değişkeni değiştirir.
+	ref++;  // Referans üzerinden orijinal değişkeni değiştirir.
 }
 
 void swap_r(int& r1, int& r2)
 {
-int temp = r1;
-r1 = r2;
-r2 = temp;
+	int temp = r1;
+	r1 = r2;
+	r2 = temp;
 }
 
 int main()
 {
-int x = 10;
-increment(x);
-std::cout << x;  // Çıktı: 11
-int y = 20;
-swap_r(x, y);
-std::cout << x; //20
-std::cout << y; //11
+	int x = 10;
+	increment(x);
+	std::cout << x;  // Çıktı: 11
+	int y = 20;
+	swap_r(x, y);
+	std::cout << x; //20
+	std::cout << y; //11
 }
 ```
 
@@ -496,14 +492,14 @@ std::cout << y; //11
 ```cpp
 int& getValue(int& x)
 {
-return x;  // Referans olarak döner.
+	return x;  // Referans olarak döner.
 }
 
 int main()
 {
-int a = 5;
-getValue(a) = 10;  // Fonksiyon dönüş değeri referans olduğu için a değişir.
-std::cout << a;  // Çıktı: 10
+	int a = 5;
+	getValue(a) = 10;  // Fonksiyon dönüş değeri referans olduğu için a değişir.
+	std::cout << a;  // Çıktı: 10
 }
 ```
 
@@ -512,28 +508,28 @@ std::cout << a;  // Çıktı: 10
 ```cpp
 struct Data
 {
-int x,y,z;
+	int x,y,z;
 };
 
 void displayData(const Data& r)
 {
-cout<<"x =" << r.x <<" " << "y = " << r.y << " " << "z =" << r.z << "\n";
+	cout<<"x =" << r.x <<" " << "y = " << r.y << " " << "z =" << r.z << "\n";
 }
 
 int main()
 {
-Data mydata = {1,2,3};
-Data mydata2 = {4,8,12};
+	Data mydata = {1,2,3};
+	Data mydata2 = {4,8,12};
 
-Data& rd = mydata; //rd demek mydata demek
+	Data& rd = mydata; //rd demek mydata demek
 
-rd = mydata2; 	// rd=4,8,12     | mydata=4,8,12     | mydata2=4,8,12
-mydata.x = 100; 	// rd=100,8,12   | mydata=100,8,12   | mydata2=4,8,12
-rd.y = 200;		// rd=100,200,12 | mydata=100,200,12 | mydata2=4,8,12
+	rd = mydata2; 		// rd=4,8,12     | mydata=4,8,12     | mydata2=4,8,12
+	mydata.x = 100; 	// rd=100,8,12   | mydata=100,8,12   | mydata2=4,8,12
+	rd.y = 200;			// rd=100,200,12 | mydata=100,200,12 | mydata2=4,8,12
 
-	displayData(mydata); //100 200 12
-	displayData(mydata2); // 4 8 12
-	displayData(rd); // 100 200 12
+	displayData(mydata); 	//100 200 12
+	displayData(mydata2); 	// 4 8 12
+	displayData(rd); 		// 100 200 12
 }
 ```
 
@@ -574,9 +570,9 @@ int&& rref = 10;  // Geçici (R-value) bir ifadeye referans. rref degiskeni, 10 
 
 int main()
 {
-std::vector<int> v1 = {1, 2, 3};
-std::vector<int> v2 = std::move(v1);  // v1'in içeriği v2'ye taşınır, kopyalama yapılmaz.
-std::cout << v1.size() << "\n";  // Çıktı: 0, çünkü v1'in içeriği taşındı.
+	std::vector<int> v1 = {1, 2, 3};
+	std::vector<int> v2 = std::move(v1);  // v1'in içeriği v2'ye taşınır, kopyalama yapılmaz.
+	std::cout << v1.size() << "\n";  // Çıktı: 0, çünkü v1'in içeriği taşındı.
 }
 ```
 
@@ -595,9 +591,10 @@ std::cout << v1.size() << "\n";  // Çıktı: 0, çünkü v1'in içeriği taşı
 - Klasik for döngüsüne göre daha temiz ve anlaşılır bir yapı sunar.
 - Diziyi taşırma ihtimali yoktur.
 
-**Örnek:** Klasik For Döngüsü                                                     Range Based For Loop
+**Örnek:** Klasik For Döngüsü ve Range Based For Loop
 
 ```cpp
+// Classic For Loop
 int arr[] = {1, 2, 3, 4, 5};
 for (int i = 0; i < 5; ++i) 
 {
@@ -606,10 +603,11 @@ for (int i = 0; i < 5; ++i)
 ```
 
 ```cpp
+// Range Based For Loop
 int arr[] = {1, 2, 3, 4, 5};
 for (int num : arr) 
 {
-std::cout << num << " "; 
+	std::cout << num << " "; 
 }
 ```
 
@@ -619,7 +617,7 @@ std::cout << num << " ";
 ```cpp
 for (int &num : arr) 
 {
-num *= 2;  // Elemanları iki katına çıkar.
+	num *= 2;  // Elemanları iki katına çıkar.
 }
 ```
 
@@ -635,12 +633,12 @@ num *= 2;  // Elemanları iki katına çıkar.
 ```cpp
 void printMessage(std::string message = "Hello, World!")
 {
-std::cout << message << std::endl;
+	std::cout << message << std::endl;
 }
 int main()
 {
-printMessage();                // Output: Hello, World!
-printMessage("Merhaba!");       // Output: Merhaba!
+	printMessage();                // Output: Hello, World!
+	printMessage("Merhaba!");       // Output: Merhaba!
 }
 ```
 
@@ -649,9 +647,9 @@ printMessage("Merhaba!");       // Output: Merhaba!
 ```cpp
 void foo(int x, int y, int z = 10)
 {
-cout << "x =" << x << "\n";
-cout << "y =" << y << "\n";
-cout << "z =" << z << "\n";
+	cout << "x =" << x << "\n";
+	cout << "y =" << y << "\n";
+	cout << "z =" << z << "\n";
 }
 int main()
 {
@@ -666,17 +664,17 @@ int main()
 
 - Varsayılan argüman için sondan başa doğru yazılır;
 
-```
-void foo(int x = 10, int y, int z) 	//HATALI!
-void foo(int x = 10, int y, int z = 10) //HATALI!
+```cpp
+void foo(int x = 10, int y, int z) 	// HATALI!
+void foo(int x = 10, int y, int z = 10) // HATALI!
 ```
 
 - Bildirimde varsayılan argüman varsa tanımda olmamalı;
 
 ```cpp
 abc.h 		--> void foo(int x, int y = 20, int z = 30);
-abc.cpp 	--> void foo(int x, int y = 20, int z = 30) {} //SYNTAX HATASI
-abc.cpp 	--> void foo(int x, int y, int z) {} // DOGRU
+abc.cpp 	--> void foo(int x, int y = 20, int z = 30) { ... } //SYNTAX HATASI
+abc.cpp 	--> void foo(int x, int y, int z) { ... } // DOGRU
 ```
 
 - Referanslarda varsayılan argüman olabilir;
@@ -698,9 +696,9 @@ void foo(int x, int y = 20, int z = func() );
 ```cpp
 string myitoa(int value, int base = 10)
 {
-char buffer[33];  // 32 bit binary için yeterli uzunlukta buffer
-    	itoa(value, buffer, base); // itoa fonksiyonu
-    	return string(buffer); // Sonucu string olarak döndürüyoruz
+	char buffer[33];  // 32 bit binary için yeterli uzunlukta buffer
+    itoa(value, buffer, base); // itoa fonksiyonu
+    return string(buffer); // Sonucu string olarak döndürüyoruz
 }
 
 char* myitoa2(int val, char* buffer, int base = 10) // C Style
@@ -710,16 +708,16 @@ char* myitoa2(int val, char* buffer, int base = 10) // C Style
 
 int main()
 {
-cout << myitoa(123) << endl;          // Base 10, Output: 123
-    	cout << myitoa(-123) << endl;         // Base 10, Output: -123
-    	cout << myitoa(123, 2) << endl;       // Base 2,  Output: 1111011
-    	cout << myitoa(255, 16) << endl;      // Base 16, Output: FF
+	cout << myitoa(123) << endl;          // Base 10, Output: 123
+    cout << myitoa(-123) << endl;         // Base 10, Output: -123
+    cout << myitoa(123, 2) << endl;       // Base 2,  Output: 1111011
+    cout << myitoa(255, 16) << endl;      // Base 16, Output: FF
 
 	char buffer[10];
 	myitoa2(250, buffer);
 	puts(buffer);
 
-return 0;
+	return 0;
 }
 ```
 
@@ -730,7 +728,7 @@ return 0;
 ```cpp
 void process_date(int day = -1, int mon = -1, int year = -1)
 {
-timer_t timer;
+	timer_t timer;
 	time(&time);
 	tm *ptr = localtime(&timer);
 
@@ -787,9 +785,11 @@ string greeting("Hello");
 
 \- Narrowing conversion hatalarını engeller.
 
-**Örnek**: 	int z{20};  // Daraltıcı dönüşüm olmaz
+**Örnek**: 	
+```cpp
+int z{20};  // Daraltıcı dönüşüm olmaz
 
-`std::vector<int>` numbers{1, 2, 3, 4, 5};
+std::vector<int> numbers{1, 2, 3, 4, 5};
 
 int x{3.14};  // Derleme hatası: narrowing conversion
 
@@ -804,14 +804,13 @@ int arr[5]{1, 2, 3, 4, 5};  // 5 elemanlı bir dizi başlatıldı
 int arr2[5]{1, 2};  // {1, 2, 0, 0, 0} olur
 
 struct Point {
-
-int x;
-
-int y;
-
+	int x;
+	int y;
 };
 
 Point p1{10, 20};  // Point nesnesi, x = 10 ve y = 20 ile başlatıldı
+
+```
 
 <a id="d3-s4"></a>
 ## Type Casting
@@ -819,7 +818,7 @@ Point p1{10, 20};  // Point nesnesi, x = 10 ve y = 20 ile başlatıldı
 - C++’da bir veri tipini başka bir türe dönüştürmek için kullanılan yöntemler vardır.
 - Tür dönüştürme implicit(örtük) ya da explicit(açık) olabilir;
 
-- **Implicit Type Casting**
+### **Implicit Type Casting**
 
 \- C++ dilinde daha düşük bir tür, daha geniş bir türe otomatik olarak dönüştürülebilir.
 
