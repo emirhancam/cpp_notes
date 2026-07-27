@@ -846,7 +846,7 @@ double b = a;  // 'a' otomatik olarak double'a dönüştürüldü
 **Örnek:**
 ```cpp
 double pi = 3.14159;
-int approx_pi = `static_cast<int>(pi);`
+int approx_pi = static_cast<int>(pi);
 ```
 
 **Örnek:**
@@ -855,7 +855,7 @@ enum DeviceState {ON, OFF, HOLD, STANDBY};
 DeviceState stm32f407DeviceState = OFF;
 int main()
 {
-	int y = `static_cast<int>(stm32f407DeviceState)` ;
+	int y = static_cast<int>(stm32f407DeviceState) ;
 }
 ```
 #### **dynamic_cast**
@@ -869,7 +869,7 @@ int main()
 **Örnek:**
 ```cpp
 Base* basePtr = new Derived();
-Derived* derivedPtr = `dynamic_cast<Derived*>(basePtr);`
+Derived* derivedPtr = dynamic_cast<Derived*>(basePtr);
 ```
 
 #### **const_cast**
@@ -879,10 +879,10 @@ Derived* derivedPtr = `dynamic_cast<Derived*>(basePtr);`
 \- const char* den char* ‘a otomatik tür dönüşümü yoktur. Bu dönüşümde kullanılır.
 
 **Örnek:**
-
+```cpp
 const int num = 10;
-
-int* p = `const_cast<int*>(&num);`  // 'num' const nitelikten çıkarıldı
+int* p = const_cast<int*>(&num);  // 'num' const nitelikten çıkarıldı
+```
 
 #### **reinterpret_cast**
 
@@ -949,17 +949,19 @@ str.insert(3, "bey") ; //alibeycan - string& insert (size_t pos, const chat* s);
   - Sadece return değeri farklı olan fonksiyonlar overload edilmez.
   - Default argüman kullanırken dikkatli olunmalıdır, belirsizliklere yol açabilir.
 
-**Örnek:**
+**Örnekler:**
 
 ```cpp
 void func(int a);
 void func(double b);
 
 func(5); // Bu durumda 5 tam sayı olduğundan void func(int a); çağrılır.
-
+```
+```cpp
 int func(int a);
 double func(int a); // Hata: Fonksiyon aşırı yüklemesi sadece geri dönüş tipiyle yapılamaz.
-
+```
+```cpp
 void func(int a, int b = 0);
 void func(int a);
 
@@ -971,12 +973,12 @@ func(5); // Hata: Hangi fonksiyon çağrılacak?
 ```cpp
 void display(int num) 
 {
-cout << "Tam sayı: " << num << endl;
+	cout << "Tam sayı: " << num << endl;
 }
 
 void display(double num) 
 {
-cout << "Ondalıklı sayı: " << num << endl;
+	cout << "Ondalıklı sayı: " << num << endl;
 }
 
 void display(const string& text) 
@@ -987,9 +989,9 @@ void display(const string& text)
 int main() 
 {
  	display(10);            // Tam sayı: 10
-    	display(3.14);          // Ondalıklı sayı: 3.14
-    	display("Merhaba");     // Metin: Merhaba
-    	return 0;
+    display(3.14);          // Ondalıklı sayı: 3.14
+    display("Merhaba");     // Metin: Merhaba
+    return 0;
 }
 ```
 
@@ -998,19 +1000,19 @@ int main()
 ```cpp
 int add(int a, int b) 
 {
-return a + b;
+	return a + b;
 }
 
 int add(int a, int b, int c) 
 {
-return a + b + c;
+	return a + b + c;
 }
 
 int main() 
 {
-    	cout << add(1, 2) << endl;       // Çıktı: 3
-    	cout << add(1, 2, 3) << endl;    // Çıktı: 6
-    	return 0;
+    cout << add(1, 2) << endl;       // Çıktı: 3
+    cout << add(1, 2, 3) << endl;    // Çıktı: 6
+    return 0;
 }
 ```
 
@@ -1147,8 +1149,8 @@ void foo(int& r);
 
 int main()
 {
-int x = 10;
-foo(x); // Derleme Hatası! ambigious call Burada xi doğrudan değere göre de alabiliriz, xi bir referans olarakta ele alabiliriz.
+	int x = 10;
+	foo(x); // Derleme Hatası! ambigious call Burada xi doğrudan değere göre de alabiliriz, xi bir referans olarakta ele alabiliriz.
 	foo(20); //exact match, bu deger referansa verilemez.
 }
 ```
