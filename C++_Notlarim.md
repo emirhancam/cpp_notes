@@ -3437,7 +3437,7 @@ public:
 ```
 
 **Örnek:**
-
+```cpp
 class Myclass{
 	int mx;
 public:
@@ -3458,7 +3458,7 @@ public:
 		Z.mx = 20;
 	}
 };
-
+```
 - Karmaşık sayı örneğinde “yeşil” ile işaretli yerler bu konu işlendikten sonra yazıldı.
 - Bazı nesnelerin STL kaplarında tutulabilmesi için operand<= veya operator== işlevlerinin bulunması gerekiyor.
 
