@@ -2394,8 +2394,8 @@ int main()
 class Name{
   	  size_t mlen;
   	  char* mp;
-  public:
-  	  Name(const char* ptr) : mlen(strlen(ptr)+1), mp(static_cast<char*>(malloc(mlen)))
+public:
+	Name(const char* ptr) : mlen(strlen(ptr)+1), mp(static_cast<char*>(malloc(mlen)))
 	{
 		strcpy(mp, ptr);
 	}
@@ -2405,46 +2405,43 @@ class Name{
 	}
   	size_t length()const
   	{
-  	  	 return mlen;
+  	  	return mlen;
   	}
   	void reverse()
   	{
-  	 	_strrev(mp); //extension
+		_strrev(mp); //extension
   	}
   	void print()const
   	{
-  	  	  cout << mp << "\n" ;
+		cout << mp << "\n" ;
   	}
   	Name(const Name& r): mlen(r.mlen), mp(static_cast<char*>(malloc(mlen)))
   	{
   	  	if(!mp)
-  	  	  {
-  	  	  	  cout << "bellek yetersiz";
-  	  	  	  exit(EXIT_FAILURE);
-  	  	  }
-  	  	  strcpy(mp, r.mp);
+		{
+  	  		cout << "bellek yetersiz";
+			exit(EXIT_FAILURE);
+		}
+		strcpy(mp, r.mp);
   	}
   	void append(const char* str)
   	{
-  	  	  char buffer[50];
-  	  	  strcpy(buffer, mp);
-  	  	  auto len=strlen(str);
-  	  	  mp = static_cast<char*>(malloc(mlen+len));
-  	  	  if(!mp)
-  	  	  {
-  	  	  	  cout << "bellek yetersiz";
-  	  	  	  exit(EXIT_FAILURE);
-  	  	  }
-  	  	  strcpy(mp, buffer);
-  	  	  strcat(mp, str);
-  	  	  mlen += len ; //Bu olmasaydı n1 ve n2 nin length i ayni gozukurdu.
+  	  	char buffer[50];
+  	  	strcpy(buffer, mp);
+  	  	auto len=strlen(str);
+  	  	mp = static_cast<char*>(malloc(mlen+len));
+  	  	if(!mp)
+  	  	{
+  	  		cout << "bellek yetersiz";
+			exit(EXIT_FAILURE);
+		}
+		strcpy(mp, buffer);
+  	  	strcat(mp, str);
+  	  	mlen += len ; //Bu olmasaydı n1 ve n2 nin length i ayni gozukurdu.
   	
-  	  cout <<n1.length() << "\n" ;
-  	  cout <<n2.length() << "\n" ;
+  	  	cout <<n1.length() << "\n" ;
+  	  	cout <<n2.length() << "\n" ;
   	}
-```
-
-```cpp
   int main()
   {
   	  Name n1("samet");
@@ -2465,7 +2462,7 @@ class Name{
 
 - Dinamik bellek yönetimiyle de kullanılabilir.
 - Fonksiyonların sonuna da delete yazabiliyoruz!
-- void func() = delete; // O fonksiyonun kullanılmasını engellemek.
+- `void func() = delete;` ifadesi O fonksiyonun kullanılmasını engellemek anlamına geliyor.
 - Bir fonksiyonu “silme” olarak bilinir ve programcıya o fonksiyonun yanlışlıkla veya kasıtlı olarak çağrılmasını engelleme imkanı verir.
 - Belirli senaryolarda fonksiyonların kullanımını sınırlamak için faydalıdır.
 - Mesela, copy constructor yapılmasını engellemek için;
@@ -2528,7 +2525,7 @@ int main() {
 
 **Örnek**:
 
-```
+```cpp
 string str3; //default ctor
 string str1("samet"); //parametreli ctor (const char*)
 string str2(str1); // copy ctor (const referans) //hayata bu sekilde geliyor
@@ -2564,9 +2561,7 @@ public:
 		return *this; //myclass nesnesinin adresi
 	}
 };
-```
 
-```cpp
 int main()
 {
 	Myclass m1;
@@ -2654,10 +2649,10 @@ string str2(move(str1)) ; //str2 = tugbayilmaz, str1 bosalmıs olacak.
 ```cpp
 Name::Name(Name&& r) noexcept : mlen(r.mlen), mp(r.mp)
 {
-        // Orijinal nesnenin kaynaklarını yeni nesneye taşır
-        r.mp = nullptr;   // Orijinal nesne boş hale gelir
-        r.mlen = 0;
-        cout << "Move constructor called!" << endl;
+	// Orijinal nesnenin kaynaklarını yeni nesneye taşır
+	r.mp = nullptr;   // Orijinal nesne boş hale gelir
+	r.mlen = 0;
+	cout << "Move constructor called!" << endl;
 }
 
 int main()
@@ -2733,16 +2728,15 @@ class Vector{
 	size_t mVecCapacity;
 
 	void reserve(size_t newCapacity) //Kapasite artirmak icin helper function. Disaridan bu fonksiyona erismemek gerekli.
-{
-	int* newData = new int[newCapacity];
+	{
+		int* newData = new int[newCapacity];
+		for (size_t i=0; i<mVecSize; ++i)
+			newData[i] = mData[i] ;
 
-	for (size_t i=0; i<mVecSize; ++i)
-	newData[i] = mData[i] ;
-
-delete[] mData; //eski data bellegiyle bir isimiz kalmadi. 
-mData = newData;
-mVecCapacity = newCapacity;
-}
+		delete[] mData; //eski data bellegiyle bir isimiz kalmadi. 
+		mData = newData;
+		mVecCapacity = newCapacity;
+	}
 public:
 	//Default Constructor
 	Vector(): mData(nullptr), mVecSize(0), mVecCapacity(0) {}
@@ -2752,99 +2746,96 @@ public:
 
 	//Copy Constructor
 	Vector(const Vector& otherVector) : mData(new int[otherVector.mVecCapacity]), mVecSize(otherVector.mVecSize), mVecCapacity(otherVector.mVecCapacity)
-{
-	for (size_t i=0; i<mVecSize; ++i)
-		mData[i] = otherVector.mData[i];
-
-}
+	{
+		for (size_t i=0; i<mVecSize; ++i)
+			mData[i] = otherVector.mData[i];
+	}
 	
-//Copy Assignment Operator : Yeni kapasite kadar bellek alınır, diger vektorun elemanları kopyalanır.
-Vector& operator=(const Vector& otherVector)
-{
-	mVecSize = otherVector.mVecSize;
-	mVecCapacity = otherVector.mVecCapacity;
-	mData = new int[mVecCapacity];
+	//Copy Assignment Operator : Yeni kapasite kadar bellek alınır, diger vektorun elemanları kopyalanır.
+	Vector& operator=(const Vector& otherVector)
+	{
+		mVecSize = otherVector.mVecSize;
+		mVecCapacity = otherVector.mVecCapacity;
+		mData = new int[mVecCapacity];
 	
-for (size_t i=0; i<mVecSize; ++i)
-	mData[i] = otherVector.mData[i];
+		for (size_t i=0; i<mVecSize; ++i)
+			mData[i] = otherVector.mData[i];
 	
-return *this;
-}
+		return *this;
+	}
 
-//Move Constructor
-Vector(Vector&& otherVector) : mData(otherVector.mData), mVecSize(otherVector.mVecSize), mVecCapacity(otherVector.mVecCapacity)
-{
-	otherVector.mData = nullptr;
-	otherVector.mVecSize = 0;
-	otherVector.mVecCapacity = 0;
-}
+	//Move Constructor
+	Vector(Vector&& otherVector) : mData(otherVector.mData), mVecSize(otherVector.mVecSize), mVecCapacity(otherVector.mVecCapacity)
+	{
+		otherVector.mData = nullptr;
+		otherVector.mVecSize = 0;
+		otherVector.mVecCapacity = 0;
+	}
 
-//Move Assignment Operator
-Vector& operator=(Vector&& otherVector)
-{
-	mData = otherVector.mData;
-	mVecSize = otherVector.mVecSize;
-	mVecCapacity = otherVector.mVecCapacity;
+	//Move Assignment Operator
+	Vector& operator=(Vector&& otherVector)
+	{
+		mData = otherVector.mData;
+		mVecSize = otherVector.mVecSize;
+		mVecCapacity = otherVector.mVecCapacity;
 
-	otherVector.mData = nullptr;
-	otherVector.mVecSize = 0;
-	otherVector.mVecCapacity = 0;
+		otherVector.mData = nullptr;
+		otherVector.mVecSize = 0;
+		otherVector.mVecCapacity = 0;
 
-	return *this;
-}
+		return *this;
+	}
 
-//Fill Constructor (Kapasite Ayarlama)
-Vector(size_t capacity, bool set_capacity_only) :mData(new int[capacity]), mVecSize(0), mVecCapacity(capacity)
-{
-	if(!set_capacity_only)
-		for(size_t i=0; i<capacity; ++i)
-			mData[i] = 0;
-}
+	//Fill Constructor (Kapasite Ayarlama)
+	Vector(size_t capacity, bool set_capacity_only) :mData(new int[capacity]), mVecSize(0), mVecCapacity(capacity)
+	{
+		if(!set_capacity_only)
+			for(size_t i=0; i<capacity; ++i)
+				mData[i] = 0;
+	}
 
-//Fill Constructor (Deger ile doldurma)
-Vector(size_t capacity, int value) : mData(new int[capacity]), mVecSize(capacity), mVecCapacity(capacity)
-{
-	for(size_t i=0; i<mVecSize; ++i)
-		mData[i] = value;
-}
-```
+	//Fill Constructor (Deger ile doldurma)
+	Vector(size_t capacity, int value) : mData(new int[capacity]), mVecSize(capacity), mVecCapacity(capacity)
+	{
+		for(size_t i=0; i<mVecSize; ++i)
+			mData[i] = value;
+	}
 
-```cpp
-//Destructor
-~Vector()
-{
-	delete[] mData;
-}
+	//Destructor
+	~Vector()
+	{
+		delete[] mData;
+	}
 
-size_t getSize() const
-{
-	return mVecSize;
-}
+	size_t getSize() const
+	{
+		return mVecSize;
+	}
 
-size_t getCapacity() const
-{
-	return mVecCapacity;
-}
+	size_t getCapacity() const
+	{
+		return mVecCapacity;
+	}
 
-//Vectore eleman eklemek. Eger kapasite dolu ise, iki katina cikarildi.
-void pushBack(const int& value)
-{
-	if(mVecSize >= mVecCapacity)
-		reserve(mVecCapacity == 0 ? 1 : mVecCapacity * 2);
+	//Vectore eleman eklemek. Eger kapasite dolu ise, iki katina cikarildi.
+	void pushBack(const int& value)
+	{
+		if(mVecSize >= mVecCapacity)
+			reserve(mVecCapacity == 0 ? 1 : mVecCapacity * 2);
 
-	mData[mVecSize++] = value;
-}
+		mData[mVecSize++] = value;
+	}
 
-//vektoru ters cevirmek
-void reverse()
-{
-	for(size_t i = 0; i<mVecSize/2 ; ++i)
-{
-	int temp = mData[i];
-	mData[i] = mData[mVecSize – 1 - i];
-	mData[mVecSize – 1 – i] = temp;
-}
-}
+	//vektoru ters cevirmek
+	void reverse()
+	{
+		for(size_t i = 0; i<mVecSize/2 ; ++i)
+		{
+			int temp = mData[i];
+		mData[i] = mData[mVecSize – 1 - i];
+		mData[mVecSize – 1 – i] = temp;
+		}
+	}
 }; //class brace
 ```
 
