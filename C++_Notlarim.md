@@ -1858,14 +1858,12 @@ int main()
 
 - C++ da pointer ve referanslar için constructor ve destructor çağrılmaz. Constructor ve destructorların yalnızca nesneler için çalıştığını bilmemiz gerekir. Pointer veya referanslar, nesneleri işaret eden veya referans veren araçlardır, kendileri birer nesne değildir. Kendi başlarına bir sınıfın özelliklerini ve davranışlarını barındırmazlar.
 
-![](images/img_005.png)
-
 **Örnek**:
 
 ```cpp
 class Myclass{
 public:
-Myclass()
+	Myclass()
 	{
 		cout << "Myclass default constructor \n" ;
 	}
@@ -1888,10 +1886,11 @@ int main()
 
 	//constructorlar (m1, m2, a[])..
 
-	cout << "main devam ediyor.. \n;
+	cout << "main devam ediyor.. \n";
 	//destructorlar (m1, m2, a[])...
 }
 ```
+![](images/img_005.png)
 
 - Statik bir sınıf nesnesi tanımlandığında;
   - Constructor için ; bulunulan fonksiyon ilk kez çağrıldığında bir defaya mahsus constructor çağrılır.
@@ -1963,8 +1962,6 @@ int main() {
 
 ![](images/img_007.png)
 
-![](images/img_008.png)
-
 **Örnek:**
 
 ```cpp
@@ -1999,6 +1996,7 @@ int main()
 	Myclass m6 = 50; // copy init x = 50
 }
 ```
+![](images/img_008.png)
 
 **Örnek**:
 
@@ -2069,11 +2067,11 @@ class Myclass
 public:
  	 Myclass() : mx(10), my(20), mz(30), a(500), r(&mx) //bu noktada mx my mz initialize edildi.
  	 {
- 	 	 	 //body
+		//body
  	 }
 };
 
- int main()
+int main()
 {
  	Myclass m1;
  	Myclass a;
@@ -2087,7 +2085,7 @@ Myclass()
  {
  	mx = 10;
  	my = 20;
-mz = 30;
+	mz = 30;
  }
 ```
 
@@ -2097,19 +2095,17 @@ mz = 30;
 class Date{
 int md, mm, my;
 public:
- 	Date(int d, int m, int y): md{d}, mm{m}, my{y}
- 	 {
- 	 }
+	Date(int d, int m, int y): md{d}, mm{m}, my{y} { }
 
- 	 void displayDate()const
- 	 {
- 	 	cout << " Day: "<<md<< " Mon: "<<mm<< " Year: "<<my;
- 	 }
+ 	void displayDate()const
+ 	{
+ 		cout << " Day: "<<md<< " Mon: "<<mm<< " Year: "<<my;
+	}
 };
 int main()
 {
  	Date mydate(11,12,1985);
- 	mydate.displayDate();
+ 	mydate.displayDate(); // Çıktı :  Day: 11 Mon: 12 Year: 1985
 }
 ```
 
@@ -2269,7 +2265,7 @@ int main()
 
 - C++’da copy constructor, bir sınıfın başka bir nesnesinden kopya alınarak yeni bir nesne oluşturulduğunda çağrılan özel bir constructordır.
 - Bu constructor, mevcut nesneyi kullanarak aynı sınıftan başka bir nesneyi başlatmak amacıyla kullanılır.
-- Syntax: ClassName(**const ClassName&** other);
+- Syntax: `ClassName(**const ClassName&** other);`
 - Referans türünde olmasının nedeni, orijinal nesnenin üzerine kopya oluşturulurken bir kopyasının alınmasının önüne geçmektir.
 - Const eklenmesi, copy constructorın orijinal nesneyi değiştirmesini engeller.
 
@@ -2300,7 +2296,7 @@ public:
 	Fighter()
 	{
 		cout << "Default ctor" << "\n";
-    	}
+	}
 
 	~Fighter()
 	{
@@ -2348,9 +2344,9 @@ int main()
 ```cpp
 
 class Myclass{
-int mx = 10;
+	int mx = 10;
 	int my = 20;
-public: //copy ctor m1 icin cagiriliyor
+public: 
 	Myclass() = default;
 	Myclass( const Myclass &r): mx(r.mx), my(r.my)
 	{
