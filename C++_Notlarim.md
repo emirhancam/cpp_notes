@@ -3422,18 +3422,24 @@ int main()
 
 **Örnek:**
 ```cpp
-int func(int x)
-{
-	Myclass a;
-	a.mx = 20;
-	return 5;
-}
-
 class Myclass{
 	int mx = 20;
 public:
 	friend int func(int); //myclass sınıfının bir fonksiyonu degil! Global fonksiyondur.
 };
+
+int func(int x)
+{
+	Myclass a;
+	a.mx = x;
+	cout << "a.mx = " << a.mx ; // 50
+	return 5;
+}
+
+int main() {
+    Myclass m1;
+    func(50);
+}
 ```
 
 **Örnek:**
