@@ -3042,7 +3042,7 @@ class Myclass{
 
 **Örnek:**
 
-```
+```cpp
 vector<int> ivec = 200; //Syntax Hatasi. Demekki bu explicitmis. Felaket! Anlamsız hareket.
 vector<int> ivec{200}; //Syntax Hatasi yok..... 200 elemanlı dizi olulşturur. Bu da anlamsız hareket.
 vector<int> ivec(200); //Syntax Hatasi yok, vektorun boyunu belirtir.
@@ -3076,14 +3076,14 @@ int main() {
 
 **Örnek:**
 
-```
+```cpp
 int* ptr = new int;          // int türünde tek bir bellek bloğu ayırır
 *ptr = 10;                   // Bellekteki değeri 10 yapar
 ```
 
 **Örnek**:
 
-```
+```cpp
  int* arrayPtr = new int[5];  	// 5 elemanlı int dizisi için bellek ayırır
  arrayPtr[0] = 1;             	// Dizi elemanlarına erişim sağlanır
  delete[] arrayPtr;  		// Diziyi serbest bırakır
@@ -3150,11 +3150,10 @@ int main()
 {
 	Myclass m1;
 }
-
-- yukarıdakilerin 3 satırları da aynı anlamda. New char[1000] de neden ctor yok ? Çünkü bir sınıf nesnesi değil, doğal bir tür!
 ```
-
 ![](images/img_011.png)
+
+- Yukarıdakilerin 3 satırları da aynı anlamda. New char[1000] de neden ctor yok ? Çünkü bir sınıf nesnesi değil, doğal bir tür!
 
 <a id="d10-s4"></a>
 ## Sınıfların Static Data Memberları
@@ -3193,8 +3192,8 @@ int main()
 	Myclass m1, m2;
 	m1.a = 200;
 	m1.x = 500; // m2.x de 500 oldu. Yani nesneye özel bir variable degil!
-	cout << "m1.x = " << m1.x << "\n";
-	cout << "m2.x = " << m2.x << "\n";
+	cout << "m1.x = " << m1.x << "\n"; 	// 500
+	cout << "m2.x = " << m2.x << "\n";	// 500
 }
 ```
 
@@ -3242,14 +3241,13 @@ int main()
 - Sınıfın kullanımını daha anlamlı ve kolay hale getirmek için kullanılır.
 
 **Örnek:**
-
+```cpp
 string str1 = "mustafa";
-
 string str2 = "topaloglu";
-
 string str3 = str1 + str2; //OPERATOR OVERLOADING
 
 if (str1 == str2) //OPERATOR OVERLOADING
+```
 
 - Operatörler, sınıfın bir üyesi olarak ya da sınıf dışı bir “friend” fonksiyon olarak aşırı yüklenir.
 - Aşağıdaki operatörler overload edilemez;
@@ -3263,28 +3261,20 @@ if (str1 == str2) //OPERATOR OVERLOADING
 - Operatorun en az bir operandı sınıf türünden olması lazım.
 
 **Örnek:**
-
+```cpp
 class Myclass{
-
 public:
-
-bool operator>(Myclass x)const;
-
-Myclass& operator+(Myclass x);
-
+	bool operator>(Myclass x)const;
+	Myclass& operator+(Myclass x);
 };
 
 int main()
-
 {
-
-Myclass m1, m2;
-
-m1 + m2; //arka planda m1.operator+(m2) cagrisi yapiliyor.
-
-5 + m1 ; //**SYNTAX HATASI 5.operator+(m1) 5 sınıf degil!. Bunu global yapacagiz.**
-
+	Myclass m1, m2;
+	m1 + m2; //arka planda m1.operator+(m2) cagrisi yapiliyor.
+	5 + m1 ; //**SYNTAX HATASI 5.operator+(m1) 5 sınıf degil!. Bunu global yapacagiz.**
 }
+```
 
 - Arity, programlama fonksiyonunun ya da işleminin aldığı argüman sayısını ifade eder.
   - Unary : Tek operand alırlar: (++, --, !)
@@ -3292,169 +3282,101 @@ m1 + m2; //arka planda m1.operator+(m2) cagrisi yapiliyor.
   - Ternary : 3 operand alır ( ?: )
 
 **Örnek :** Karmaşık Sayı
-
+```cpp
 class ComplexNumber{
-
-int mReal, mImg;
-
+	int mReal, mImg;
 public:
+	ComplexNumber() = mReal{0}, mImg{0};
+	ComplexNumber(int real, int img):mReal{real}, mImg{img} {}
+	void set(int r, int i)
+	{
+		mReal = r;
+		mImg = i;
+	}
+	void getReal()const
+	{
+		return mReal;
+	}
+	void getImg()const
+	{
+		return mImg;
+	}
 
-ComplexNumber() = mReal{0}, mImg{0};
-
-ComplexNumber(int real, int img):mReal{real}, mImg{img} {}
-
-**void set(int r, int i)**
-
-{
-
-mReal = r;
-
-mImg = i;
-
-}
-
-**void getReal()const**
-
-{
-
-return mReal;
-
-}
-
-**void getImg()const**
-
-{
-
-return mImg;
-
-}
-
-//Pass by Value : Yeni bir nesne gerektigi icin referans dondurmanin bir anlamı yok.
-
+// Pass by Value : Yeni bir nesne gerektigi icin referans dondurmanin bir anlamı yok.
 // Orjinal nesneler üzerinde (this veya r, değişiklik yapmıyoruz)
 
-**ComplexNumber operator+(const ComplexNumber& r)const**
-
-{
-
-//n1 degistirilmedigi icin const yaptik.
-
-ComplexNumber res;
-
-res.mReal = mReal + r.mReal;
-
-res.mImg = mImg + r.mImg;
-
-return res;
-
-}
+	ComplexNumber operator+(const ComplexNumber& r)const
+	{
+		//n1 degistirilmedigi icin const yaptik.
+		ComplexNumber res;
+		res.mReal = mReal + r.mReal;
+		res.mImg = mImg + r.mImg;
+		return res;
+	}
 
 //Pass By Reference
-
 //Bu operator, mevcut nesneyi (this) dogrudan degistirir.
-
 //Yani c1 += c2 dedigimizde islem c1 üzerinde yapılır.
 
-**ComplexNumber& operator+=(const ComplexNumber& r)**
+	ComplexNumber& operator+=(const ComplexNumber& r)
+	{
+		this->mReal += r.mReal; //this yazmaya gerek te yok burada aslında.
+		this->mImg += r.mImg; //this yazmaya gerek te yok burada aslında.
+		return *this;
+	}
 
-{
+	ComplexNumber operator+(int value) const
+	{
+		ComplexNumber res(*this); //copy constructor cagirilir.
+		res.mReal += x;
+		return res;
+	}
 
-this->mReal += r.mReal; //this yazmaya gerek te yok burada aslında.
+	bool operator==(const ComplexNumber& r) const
+	{
+		return mReal == r.mReal && mImg == r.mImg;
+	}
 
-this->mImg += r.mImg; //this yazmaya gerek te yok burada aslında.
+	void display()const
+	{
+		cout << mReal << "+"<<mImg << "i" <<"\n";
+	}
 
-return *this;
+	friend ComplexNumber operator+(int x, ComplexNumber& r);
 
+	ComplexNumber operator+(int x, ComplexNumber& r)
+	{
+		ComplexNumber res;
+		res.mReal = x + r.mReal;
+		res.mImg += r.mImg;
+		return res;
+	}
 }
-
-**ComplexNumber operator+(int value) const**
-
+int main()
 {
+	ComplexNumber n1(3,5);
+	ComplexNumber n2(6,8);
+	ComplexNumber res = n1 + n2; //9+13i
 
-ComplexNumber res(*this); //copy constructor cagirilir.
+	n1.display();
+	n2.display();
+	res.display();
 
-res.mReal += x;
+	ComplexNumber s1(10, 20);
+	ComplexNumber s2(20, 30);
+	s1 += s2;
+	s1.display(); // 30 + 50i, s1 degisti.
+	ComplexNumber cres= s1 + 5; //s1.operator(5) , 35+50i
+	cres.display();
 
-return res;
+	ComplexNumber c1(3, 4);
+	ComplexNumber c2(6, 8);
+	if (c1 == c2)
+		cout << "c1 ve c2 esit" << "\n";
+	else
+		cout << "c1 ve c2 esit degil!" << "\n";
 
-}
-
-**bool operator==(const ComplexNumber& r) const**
-
-{
-
-return mReal == r.mReal && mImg == r.mImg;
-
-}
-
-**void display()const**
-
-{
-
-cout << mReal << "+"<<mImg << "i" <<"\n";
-
-}
-
-**friend ComplexNumber operator+(int x, ComplexNumber& r);**
-
-}
-
-**ComplexNumber operator+(int x, ComplexNumber& r)**
-
-{
-
-ComplexNumber res;
-
-res.mReal = x + r.mReal;
-
-res.mImg += r.mImg;
-
-return res;
-
-}
-
-**int main()**
-
-{
-
-ComplexNumber n1(3,5);
-
-ComplexNumber n2(6,8);
-
-ComplexNumber res = n1 + n2; //9+13i
-
-n1.display();
-
-n2.display();
-
-res.display();
-
-ComplexNumber s1(10, 20);
-
-ComplexNumber s2(20, 30);
-
-s1 += s2;
-
-s1.display(); // 30 + 50i, s1 degisti.
-
-ComplexNumber cres= s1 + 5; //s1.operator(5) , 35+50i
-
-cres.display();
-
-ComplexNumber c1(3, 4);
-
-ComplexNumber c2(6, 8);
-
-if (c1 == c2)
-
-cout << "c1 ve c2 esit" << "\n";
-
-else
-
-cout << "c1 ve c2 esit degil!" << "\n";
-
-(5+c1).display(); // 8, 4
-
+	(5+c1).display(); // 8, 4
 }
 
 <a id="d13-s2"></a>
