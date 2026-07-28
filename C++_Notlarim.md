@@ -3283,100 +3283,127 @@ int main()
 
 **Örnek :** Karmaşık Sayı
 ```cpp
-class ComplexNumber{
-	int mReal, mImg;
+#include <iostream>
+using namespace std;
+
+class ComplexNumber {
+    int mReal, mImg;
+
 public:
-	ComplexNumber() = mReal{0}, mImg{0};
-	ComplexNumber(int real, int img):mReal{real}, mImg{img} {}
-	void set(int r, int i)
-	{
-		mReal = r;
-		mImg = i;
-	}
-	void getReal()const
-	{
-		return mReal;
-	}
-	void getImg()const
-	{
-		return mImg;
-	}
+    // Constructor initializer list ":" ile başlar.
+    ComplexNumber() : mReal{0}, mImg{0} {}
 
-// Pass by Value : Yeni bir nesne gerektigi icin referans dondurmanin bir anlamı yok.
-// Orjinal nesneler üzerinde (this veya r, değişiklik yapmıyoruz)
+    ComplexNumber(int real, int img)
+        : mReal{real}, mImg{img} {}
 
-	ComplexNumber operator+(const ComplexNumber& r)const
-	{
-		//n1 degistirilmedigi icin const yaptik.
-		ComplexNumber res;
-		res.mReal = mReal + r.mReal;
-		res.mImg = mImg + r.mImg;
-		return res;
-	}
+    void set(int r, int i)
+    {
+        mReal = r;
+        mImg = i;
+    }
 
-//Pass By Reference
-//Bu operator, mevcut nesneyi (this) dogrudan degistirir.
-//Yani c1 += c2 dedigimizde islem c1 üzerinde yapılır.
+    // Değer döndürdükleri için dönüş tipi int olmalı.
+    int getReal() const
+    {
+        return mReal;
+    }
 
-	ComplexNumber& operator+=(const ComplexNumber& r)
-	{
-		this->mReal += r.mReal; //this yazmaya gerek te yok burada aslında.
-		this->mImg += r.mImg; //this yazmaya gerek te yok burada aslında.
-		return *this;
-	}
+    int getImg() const
+    {
+        return mImg;
+    }
 
-	ComplexNumber operator+(int value) const
-	{
-		ComplexNumber res(*this); //copy constructor cagirilir.
-		res.mReal += x;
-		return res;
-	}
+    // n1 + n2
+    // Nesneleri değiştirmez, yeni nesne döndürür.
+    ComplexNumber operator+(const ComplexNumber& r) const
+    {
+        ComplexNumber res;
 
-	bool operator==(const ComplexNumber& r) const
-	{
-		return mReal == r.mReal && mImg == r.mImg;
-	}
+        res.mReal = mReal + r.mReal;
+        res.mImg  = mImg + r.mImg;
 
-	void display()const
-	{
-		cout << mReal << "+"<<mImg << "i" <<"\n";
-	}
+        return res;
+    }
 
-	friend ComplexNumber operator+(int x, ComplexNumber& r);
+    // n1 += n2
+    // Sol taraftaki nesneyi değiştirir.
+    ComplexNumber& operator+=(const ComplexNumber& r)
+    {
+        mReal += r.mReal;
+        mImg  += r.mImg;
 
-	ComplexNumber operator+(int x, ComplexNumber& r)
-	{
-		ComplexNumber res;
-		res.mReal = x + r.mReal;
-		res.mImg += r.mImg;
-		return res;
-	}
+        return *this;
+    }
+
+    // n1 + 5
+    ComplexNumber operator+(int value) const
+    {
+        ComplexNumber res(*this); // Otomatik copy constructor çağrılır.
+
+        res.mReal += value;
+
+        return res;
+    }
+
+    bool operator==(const ComplexNumber& r) const
+    {
+        return mReal == r.mReal &&
+               mImg  == r.mImg;
+    }
+
+    void display() const
+    {
+        cout << mReal << "+" << mImg << "i\n";
+    }
+
+    // 5 + n1 işlemini gerçekleştirecek global fonksiyona
+    // private alanlara erişim izni veriyoruz.
+    friend ComplexNumber operator+(
+        int x,
+        const ComplexNumber& r
+    );
+}; // Class tanımından sonra noktalı virgül zorunlu.
+
+// Bu bir member function değil, global operator fonksiyonudur.
+ComplexNumber operator+(int x, const ComplexNumber& r)
+{
+    ComplexNumber res;
+
+    res.mReal = x + r.mReal;
+    res.mImg  = r.mImg;
+
+    return res;
 }
+
 int main()
 {
-	ComplexNumber n1(3,5);
-	ComplexNumber n2(6,8);
-	ComplexNumber res = n1 + n2; //9+13i
+    ComplexNumber n1(3, 5);
+    ComplexNumber n2(6, 8);
 
-	n1.display();
-	n2.display();
-	res.display();
+    ComplexNumber res = n1 + n2;
 
-	ComplexNumber s1(10, 20);
-	ComplexNumber s2(20, 30);
-	s1 += s2;
-	s1.display(); // 30 + 50i, s1 degisti.
-	ComplexNumber cres= s1 + 5; //s1.operator(5) , 35+50i
-	cres.display();
+    n1.display();
+    n2.display();
+    res.display();
 
-	ComplexNumber c1(3, 4);
-	ComplexNumber c2(6, 8);
-	if (c1 == c2)
-		cout << "c1 ve c2 esit" << "\n";
-	else
-		cout << "c1 ve c2 esit degil!" << "\n";
+    ComplexNumber s1(10, 20);
+    ComplexNumber s2(20, 30);
 
-	(5+c1).display(); // 8, 4
+    s1 += s2;
+    s1.display();
+
+    ComplexNumber cres = s1 + 5;
+    cres.display();
+
+    ComplexNumber c1(3, 4);
+    ComplexNumber c2(6, 8);
+
+    if (c1 == c2)
+        cout << "c1 ve c2 esit\n";
+    else
+        cout << "c1 ve c2 esit degil!\n";
+
+    (5 + c1).display();
 }
 ```
 <a id="d13-s2"></a>
