@@ -3378,7 +3378,7 @@ int main()
 
 	(5+c1).display(); // 8, 4
 }
-
+```
 <a id="d13-s2"></a>
 ## Global Operator Fonksiyonları (Friendlik Bildirimleri)
 
