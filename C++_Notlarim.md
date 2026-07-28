@@ -1686,15 +1686,12 @@ name.append(surname).insert(len, " Kemal "); //Mustafa Kemal Atatürk
 - Constructor, parametreler alarak nesneyi belirli değerlerle başlatabilir.
 - Constructor nesneyi başlatırken, destructor nesne ömrü sona erdiğinde çağrılır ve kaynakları serbest bırakmak için kullanılır.
 
-![](images/img_001.png)
-
 **Örnek**:
 
 ```cpp
-class Myclass
-{
+class Myclass{
 public:
-Myclass()
+	Myclass()
 	{
 		cout << "Constructor Cagirildi\n";
 	}
@@ -1705,38 +1702,39 @@ int main()
 	Myclass m1; //ilk cagirilan fonksiyon constructordur. Hayata constructor getiriyor.
 }
 ```
-
-![](images/img_002.png)
+![](images/img_001.png)
 
 **Örnek**:
 
 ```cpp
-	class MyClass {
-	public:
-    		int x;
-    		// Default constructor
-    		MyClass() {
-        		x = 0;
-        		cout << "Default constructor called!" << endl;
-    		}
-    		// Parametreli constructor
-    		MyClass(int val) {
-        		x = val;
-        		cout << "Parameterized constructor called!" << endl;
-    		}
-	};
-
-	int main()
-	{
-    		MyClass obj1;        // Default constructor çağrılır
-    		MyClass obj2(10);    // Parametreli constructor çağrılır
-
-    		cout << "obj1.x = " << obj1.x << endl;  // 0
-    		cout << "obj2.x = " << obj2.x << endl;  // 10
-
-    		return 0;
+class MyClass {
+public:
+	int x;
+	// Default constructor
+	MyClass() {
+   		x = 0;
+   		cout << "Default constructor called!" << endl;
 	}
+	// Parametreli constructor
+    MyClass(int val) {
+		x = val;
+        cout << "Parameterized constructor called!" << endl;
+	}
+};
+
+int main()
+{
+	MyClass obj1;        // Default constructor çağrılır
+    MyClass obj2(10);    // Parametreli constructor çağrılır
+
+    cout << "obj1.x = " << obj1.x << endl;  // 0
+    cout << "obj2.x = " << obj2.x << endl;  // 10
+
+	return 0;
+}
 ```
+![](images/img_002.png)
+
 
 - Constructorlar, bir nesnenin doğru bir şekilde başlamasını garanti eder.
 - Sınıflar arası bağımlılıkları yönetirken önemli rol oynar.
@@ -1756,36 +1754,35 @@ int main()
 - Non cost olmak zorundadır.
 - İsmi ile çağrılabilir ancak bunu yalnızca özel bir bağlamda gerçekleştirilir. Onun dışında biz destructor fonksiyonunu çağırmayız.
 
-![](images/img_003.png)
-
 **Örnek:**
 
 ```cpp
 class MyClass {
 public:
-    	int* ptr;
+	int* ptr;
 
-    	// Constructor: Bellek ayırıyor
-    	MyClass(int size) {
-        	ptr = new int[size];  // Dinamik bellek ayırma
-        	cout << "Constructor called! Memory allocated." << endl;
-    	}
+    // Constructor: Bellek ayırıyor
+    MyClass(int size) {
+       	ptr = new int[size];  // Dinamik bellek ayırma
+       	cout << "Constructor called! Memory allocated." << endl;
+    }
 
-    	// Destructor: Bellek serbest bırakıyor
-    	~MyClass() {
-        	delete[] ptr;  // Dinamik belleği serbest bırakma
-        	cout << "Destructor called! Memory freed." << endl;
-    	}
+    // Destructor: Bellek serbest bırakıyor
+    ~MyClass() {
+       	delete[] ptr;  // Dinamik belleği serbest bırakma
+       	cout << "Destructor called! Memory freed." << endl;
+    }
 };
 
 int main() {
-    	MyClass obj(10);  // Constructor çağrılır, 10 elemanlık dinamik bellek ayırılır
+    MyClass obj(10);  // Constructor çağrılır, 10 elemanlık dinamik bellek ayırılır
 
-    	// Nesne `obj` işlev bloğu sona erdiğinde (main fonksiyon bittiğinde) yok edilir
-    	// ve destructor otomatik olarak çağrılır
-    	return 0;
+    // Nesne `obj` işlev bloğu sona erdiğinde (main fonksiyon bittiğinde) yok edilir
+    // ve destructor otomatik olarak çağrılır
+    return 0;
 }
 ```
+![](images/img_003.png)
 
 - Destructor ne zaman çağırılır ?
   - **Otomatik Ömürlü Nesneler :** Bir fonksiyon içinde tanımlanan yerel bir nesne, fonksiyon sona erdiğinde destructor tarafından yok edilir.
@@ -1836,7 +1833,9 @@ int main()
 }
 ```
 
-- Bir fonksiyon çağrıldığında syntax hatası vermesini sağlamak için;
+- Bir fonksiyon çağrıldığında syntax hatası vermesini sağlamak için **`delete`** keywordü kullanılır. Derleyiciye şu mesaj verilir: *"Bu fonksiyonu benim yerime otomatik üretme ve eğer birisi bunu kullanmaya çalışırsa derleme zamanında (compile-time) hata ver."*
+- Belki bazı sınıflar sadece utility amaçlıdır. O sınıfdan bir nesne oluşturulmasını istemeyebiliriz. Ayrıca copy constructor da delete'e eşitlediğimizde bu sınıfın kopyalanamaz olduğunu bildirmiş oluruz.
+- Burada aklımıza *"Neden private kısma yazmıyoruz ? "* sorusu gelebilir. `delete` yazarak kimseye ayrıcalık tanımıyoruz. Kendi sınıfımız içinde bile çağıramıyoruz. 
 
 ```cpp
 class Myclass {
