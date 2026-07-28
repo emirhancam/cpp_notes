@@ -3477,189 +3477,158 @@ public:
 - Çift operandlılar dışarıda, tek operandlılar içeride tanımlanır.
 
 **Örnek:** Counter Sınıfı
+```cpp
+#include <iostream>
 
-Class Counter{
+using namespace std;
 
-int mx{0} ;
+class Counter {
+private:
+    int mx{0};
 
-public
+public:
+    Counter() = default;
 
-Counter() = default;
+    explicit Counter(int val)
+        : mx{val}
+    {
+    }
 
-explicit Counter(int val) : mx{val} {}
+    Counter& operator+=(int x);
 
-Counter& operator+=(int x);
+    friend ostream& operator<<(ostream& os, const Counter& c);
 
-friend ostream& operator<< (ostream& os, const Counter& c); //
+    // Counter nesnesi değişeceği için c const olamaz.
+    friend istream& operator>>(istream& is, Counter& c);
 
-friend ostream& operator>> (istream& is, Counter& c); // counter nesnesi degiseceginden const olamaz.
+    friend bool operator==(const Counter& c1, const Counter& c2);
+    friend bool operator!=(const Counter& c1, const Counter& c2);
+    friend bool operator<(const Counter& c1, const Counter& c2);
+    friend bool operator<=(const Counter& c1, const Counter& c2);
+    friend bool operator>(const Counter& c1, const Counter& c2);
+    friend bool operator>=(const Counter& c1, const Counter& c2);
 
-friend bool operator==(const Counter& c1, const Counter& c2);
+    // Prefix increment: ++c1
+    Counter& operator++()
+    {
+        ++mx;
+        return *this;
+    }
 
-friend bool operator<(const Counter& c1, const Counter& c2);
+    // Prefix decrement: --c1
+    Counter& operator--()
+    {
+        --mx;
+        return *this;
+    }
 
-friend bool operator<=(const Counter& c1, const Counter& c2);
+    // Postfix increment: c1++
+    Counter operator++(int)
+    {
+        // Artırılmadan önceki değerin kopyasını oluştur.
+        Counter temp{*this};
 
-friend bool operator>=(const Counter& c1, const Counter& c2);
+        // Asıl nesneyi artır.
+        ++(*this);
 
-friend bool operator>(const Counter& c1, const Counter& c2);
+        // Eski değeri döndür.
+        return temp;
+    }
 
-friend bool operator!=(const Counter& c1, const Counter& c2);
+    // Postfix decrement: c1--
+    Counter operator--(int)
+    {
+        // Azaltılmadan önceki değerin kopyasını oluştur.
+        Counter temp{*this};
 
-Counter& operator++() // ++c1 : Nesne degisiyor o sebeple Counter&
+        // Asıl nesneyi azalt.
+        --(*this);
 
-{
-
-++mx;
-
-return *this;
-
-}
-
-Counter& operator—() // --c1 : Nesne degisiyor o sebeple Counter&
-
-{
-
---mx;
-
-return *this;
-
-}
-
-Counter operator++(int) // c1++ : Nesne degismiyor o sebeple Counter
-
-{
-
-Counter temp{*this}; //copy ctor
-
-++*this; //nesneyi burada artiriyoruz.
-
-return temp; //Ancak orijinal durumu iceren kopyayi donduruyoruz.
-
-}
-
-Counter operator--(int) // c1-- : Nesne degismiyor o sebeple Counter
-
-{
-
-Counter temp{*this}; //copy ctor
-
---*this;
-
-return temp;
-
-}
-
+        // Eski değeri döndür.
+        return temp;
+    }
 };
 
 bool operator<(const Counter& c1, const Counter& c2)
-
 {
-
-return (c1.mx < c2.mx) ;
-
+    return c1.mx < c2.mx;
 }
 
 bool operator<=(const Counter& c1, const Counter& c2)
-
 {
-
-return !(c2 < c1);
-
+    return !(c2 < c1);
 }
 
 bool operator>(const Counter& c1, const Counter& c2)
-
 {
-
-return (c2 < c1); //uzun uzun yapmaya gerek yok. c2 c1'den kucukse c1 buyuk demektir zaten.
-
+    // c2, c1'den küçükse c1, c2'den büyüktür.
+    return c2 < c1;
 }
 
-bool operator==(const Counter& c1, const Counter& c2) //const yazılmaz en sona, class disi fonksiyon!
-
+bool operator>=(const Counter& c1, const Counter& c2)
 {
+    return !(c1 < c2);
+}
 
-return (c1.mx == c2.mx) ;
-
+bool operator==(const Counter& c1, const Counter& c2)
+{
+    // Class dışı fonksiyon olduğu için sona const yazılmaz.
+    return c1.mx == c2.mx;
 }
 
 bool operator!=(const Counter& c1, const Counter& c2)
-
 {
-
-return !(c1 == c2);
-
+    return !(c1 == c2);
 }
 
-Counter& Counter::operator+=(int x) //atamalı toplama da nesne degisiyor! Bu sebeple Counter&
-
+Counter& Counter::operator+=(int x)
 {
-
-mx += x;
-
-return *this
-
+    mx += x;
+    return *this;
 }
 
-//inserter
-
-ostream& operator<< (ostream& os, const Counter& c) //cout
-
+// Inserter: cout << counter
+ostream& operator<<(ostream& os, const Counter& c)
 {
-
-return os<<c.mx;
-
+    return os << c.mx;
 }
 
-//extracter
-
-ostream& operator>> (istream& is, Counter& c) //cin
-
+// Extractor: cin >> counter
+istream& operator>>(istream& is, Counter& c)
 {
-
-return is>>c.mx;
-
+    return is >> c.mx;
 }
 
 int main()
-
 {
+    // explicit olduğu için aşağıdaki kullanım hatalıdır:
+    // Counter ival = 10;
 
-//Counter ival = 10; //explicit oldugu icin hatali bir atama.
+    Counter c1;
+    Counter c2{10};
+    Counter c3{30};
 
-Counter c1;
+    c3 += 30;
 
-Counter c2{ 10 }, c3{ 30 };
+    cout << "c3: " << c3 << '\n';
 
-c3 += 30;
+    cout << "Bir Counter değeri giriniz: ";
+    cin >> c1;
 
-//cout << c3; // Hatali. Operator left shift yapilmamis... operator<< yok.
+    cout << "Counter nesnesi: " << c1 << '\n';
 
-//left shifti yazdik.
+    if (c1 == c2) {
+        cout << "Esit\n";
+    } else {
+        cout << "Esit degil\n";
+    }
 
-cout << c3 ; //60. --> cout.operator<<
+    ++c1;
+    --c1;
 
-cout <<"Bir counter nesnesi aliniyor giriniz:
-
-cin >> c1;
-
-cout << "Counter nesnesi : " << c1;
-
-if(c1 == c2)
-
-cout << "Esit";
-
-else
-
-cout << "Esit Degil";
-
-++c1;
-
---c1;
-
+    return 0;
 }
-
+```
 <a id="d14-s2"></a>
 ## String Sınıfı
 
@@ -3671,74 +3640,52 @@ cout << "Esit Degil";
 - +, +=, ==, <, > gibi bir çok operatör, string üzerinde anlamlı bir şekilde çalışacak şekilde aşırı yüklenmiştir.
 
 **Örnek:**
-
+```cpp
 string str; //default constructor.
-
 cout <<"Yazi uzunlugu: "<<str.length();
 
 string str2("emirhan"); //c string constructor. //direct initialization
-
 cout <<"Yazi uzunlugu: "<<str2.length(); // 7
 
 string str3 = "alican"; //c string  constructor. //copy initialization
-
 string str4(str3); // copy constructor
+```
 
 **Örnek:**
-
+```cpp
 string str2("emirhan cam");
-
 string str5(str2, 8); //cam --> substring constructor
-
 string str6(str2, 8, 2); //ca --> substring constructor
-
 string str7("samet", 3); //sam --> Sequence constructor
-
 string str8(10, 'A'); // AAAAAAAAAA --> Fill Constructor.
-
 string str9(move(str3)); // move constructor
-
 string str9(str2.begin()+3, str2.end() ) ; //range constructor. iteratorler gorulunce daha anlamli olacak.
+```
 
 **Ornek:**
-
+```cpp
 string str1 = "emirhan";
-
 string str2 = "cam";
-
 str1 = str2 ; //copy assignment operator.
-
 str2 = "Ali Kaya"; //copy assignment operator
-
+```
 - size ve length aynı işi yapıyor gibi. Ancak kapasite biraz farklı.
 - Append işlevi;
-
+```cpp
 string name = "samet";
-
 string surname = "akcalar";
-
 name.append(surname); //name = sametakcalar oldu.
-
 string fullname = "samet akcalar";
-
 string company = "radikal yazilim";
-
 company.append(fullname, 5);  //radikal yazilim akcalar
-
 string str;
-
 for(int i=0; i<100; ++i)
-
 {
-
-str.append(1, 'A');
-
-cout<<"size : " << str.size() << "capacity: "<< str.capacity << "\n";
-
-// 0 15, 1-15 ... 15-15 16-31.... 31-31, 32-47 ... 47-47, 48-70 ... 1.5kat gibi artiyor.
-
+	str.append(1, 'A');
+	cout<<"size : " << str.size() << "capacity: "<< str.capacity << "\n";
+	// 0 15, 1-15 ... 15-15 16-31.... 31-31, 32-47 ... 47-47, 48-70 ... 1.5kat gibi artiyor.
 }
-
+```
 - Vektor ve string sınıfları dinamik dizilerdir aynı zamanda.
 
 [↑ İçindekiler](#icindekiler)
