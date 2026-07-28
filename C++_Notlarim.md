@@ -3421,67 +3421,42 @@ int main()
 - Karşılaştırma operatör fonksiyonları genellikle global yazılır. Bunun yegane sebebi, sol operandın sınıf türünde olmama ihtimalidir.
 
 **Örnek:**
-
+```cpp
 int func(int x)
-
 {
-
-Myclass a;
-
-a.mx = 20;
-
-return 5;
-
+	Myclass a;
+	a.mx = 20;
+	return 5;
 }
 
 class Myclass{
-
-int mx = 20;
-
+	int mx = 20;
 public:
-
-friend int func(int); //myclass sınıfının bir fonksiyonu degil! Global fonksiyondur.
-
+	friend int func(int); //myclass sınıfının bir fonksiyonu degil! Global fonksiyondur.
 };
+```
 
 **Örnek:**
 
 class Myclass{
-
-int mx;
-
+	int mx;
 public:
-
-//friend Class A;
-
-friend void A::foo();
-
+	//friend Class A;
+	friend void A::foo();
 };
 
 class A{
-
 public:
-
-A() {}
-
-int func(int x)
-
-{
-
-return 5;
-
-}
-
-void foo()
-
-{
-
-Myclass Z;
-
-Z.mx = 20;
-
-}
-
+	A() {}
+	int func(int x)
+	{
+		return 5;
+	}
+	void foo()
+	{
+		Myclass Z;
+		Z.mx = 20;
+	}
 };
 
 - Karmaşık sayı örneğinde “yeşil” ile işaretli yerler bu konu işlendikten sonra yazıldı.
