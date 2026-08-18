@@ -155,7 +155,7 @@
   - [Designated Initializers (Belirlenen Başlatıcılar)](#d34-s3)
   - [Three-Way Comparison (Spaceship Operator <=> )](#d34-s4)
   - [constexpr Gelişmeleri](#d34-s5)
-
+- [Ders 35: C++26 Pack Indexing ](#ders-35)
 ---
 
 <a id="ders-1"></a>
@@ -10400,6 +10400,86 @@ constexpr int sumVec() {
 }
 // Derleme sırasında kontrol et. Eğer sonuç 15 değilse program derlenmesin!
 static_assert(sumVec() == 15); // Compiler-time doğrulama
+```
+
+[↑ İçindekiler](#icindekiler)
+
+<a id="ders-35"></a>
+# Ders 35: C++26 Pack Indexing
+
+- Bir template'e "kaç tane olduğu belli olmayan" tip veya değer verebiliyoruz. Buna **parametre paketi** deniyor.
+
+```cpp
+template <typename... Ts> // Ts = tiplerden oluşan bir paket
+void f(Ts... args) { // args = değerlerden oluşan bir paket
+	// Ts = {int, double, char} gibi bir liste
+}
+f(1, 3.14, 'x'); // Ts... yerine int, double, char geçti
+```
+- Paket bir liste. Ama C++23'e kadar bu listeye `liste[0]` diyerek erişemiyorduk. Elemanı tek tek açabiliyorduk. (`args...` ile hepsini birden) ama "Bana 2. Elemanı Ver!" diyemiyorduk.
+- C++26'nın çözümü : Köşeli parantez : ` paket...[indeks] ` Bu kadar. `...` ile `[N]` yan yana.
+
+```cpp
+// Tip paketini indeksleme
+template <typename... Ts>
+using ilk_tip = Ts...[0];					// ilk tip
+template <typename... Ts>
+using son_tip = Ts...[sizeof...(Ts) - 1 ] ;	// son tip
+
+// Deger paketini indeksleme
+template <typename... Args>
+constexpr auto ikinciyi_al(Args... args) {
+	return args...[1]; // 1 numaralı argüman
+}
+```
+```cpp
+#include <print>
+#include <type_traits>
+
+// --- 1) Tip paketini indeksleme -------------------------------------
+template <typename... Ts>
+using ilk_tip = Ts...[0];          // paketin 0. tipi
+
+template <typename... Ts>
+using son_tip = Ts...[sizeof...(Ts) - 1];   // paketin son tipi
+
+// --- 2) Değer paketini indeksleme -----------------------------------
+template <typename... Args>
+constexpr auto ilk_deger(Args... args) {
+    return args...[0];             // ilk argümanın KOPYASI döner
+}
+
+template <typename... Args>
+constexpr decltype(auto) son_deger(Args&&... args) {
+    return args...[sizeof...(args) - 1];
+    //             ^^^^^^^^^^^^^^^ değer paketinde de sizeof... çalışır
+}
+
+
+// --- 3) Pratik kullanım: ilk argüman "etiket", gerisi veri ----------
+template <typename... Args>
+void logla(Args&&... args) {
+    auto etiket = args...[0];      // ilkini ayrı ele al
+    std::println("[{}] {} adet argüman geldi", etiket, sizeof...(args) - 1);
+}
+
+
+int main() {
+    std::println("{}", ilk_deger(10, 20, 30));   // 10
+    std::println("{}", son_deger(10, 20, 30));   // 30
+
+    logla("XFRM", 1, 2, 3);        // [XFRM] 3 adet argüman geldi
+
+    // constexpr'da da çalışır -> derleme zamanında hesaplanır
+    constexpr int x = ilk_deger(7, 8, 9);
+    static_assert(x == 7);
+}
+```
+- ÇIKTI
+```
+0
+30
+[XFRM] 3 adet argüman geldi
 ```
 
 [↑ İçindekiler](#icindekiler)
