@@ -10434,7 +10434,6 @@ constexpr auto ikinciyi_al(Args... args) {
 ```
 ```cpp
 #include <print>
-#include <type_traits>
 
 // --- 1) Tip paketini indeksleme -------------------------------------
 template <typename... Ts>
@@ -10477,7 +10476,7 @@ int main() {
 ```
 - ÇIKTI
 ```
-0
+10
 30
 [XFRM] 3 adet argüman geldi
 ```
