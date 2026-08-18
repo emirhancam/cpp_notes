@@ -156,6 +156,7 @@
   - [Three-Way Comparison (Spaceship Operator <=> )](#d34-s4)
   - [constexpr Gelişmeleri](#d34-s5)
 - [Ders 35: C++26 Pack Indexing ](#ders-35)
+- [Ders 36: #embed Direktifi ](#ders-36)
 ---
 
 <a id="ders-1"></a>
@@ -10480,5 +10481,128 @@ int main() {
 30
 [XFRM] 3 adet argüman geldi
 ```
+
+[↑ İçindekiler](#icindekiler)
+
+<a id="ders-36"></a>
+# Ders 36: C++26 #embed Direktifi
+
+- Diyelim STM32 projelerinde bir font tablosu, bir logo, bir kalibrasyon verisi veya bir firmware imajı var. Bu dosya `flash`'ta durmalı, çalışma anında `fopen` ile okuyamazsın çünkü dosya sistemi yok.
+- Yani dosyanın **derleme zamanında** koda dönüşmesi lazım.
+- **Eski Yöntem 1 : `xxd -i`**
+```
+xxd -i font.bin > font.h
+```
+
+Bu şunu üretir:
+```cpp
+unsigned char font_bin[] = {
+  0x00, 0x1f, 0x3e, 0x7c, 0xf8, 0xf0, 0xe0, 0xc0,
+  0x80, 0x00, 0x01, 0x03, 0x07, 0x0f, 0x1f, 0x3f,
+  /* ... 40.000 satır daha ... */
+};
+unsigned int font_bin_len = 320000;
+```
+Sorunları:
+- Built sistemine ekstra bir adım giriyor.
+- Üretilen header devasa, derleyici 320000 tane ayrı tam sayı ifadesini tek tek parse edip ayrı ayrı düğüm kuruyor.
+- Dosya değiştiğinde header'ı yeniden üretmeyi unutursan eski veriyle derlersin.
+
+- **Eski Yöntem 2 : `linker/objcopy`**
+```
+objcopy -I binary -O elf32-littlearm font.bin font.o
+```
+Sonra C tarafında linkerın uydurduğu sembolleri `extern` ile yakalarız: (sembol isimleri platforma göre değişiyor )
+```cpp
+extern const unsigned char _binary_font_bin_start[];
+extern const unsigned char _binary_font_bin_end[];
+```
+
+**C++ 26 Çözümü : `#embed`**
+- Bu bir preprocessor direktifi - tıpkı `#include` gibi, ama dosyayı metin olarak değil byte listesi olarak getiriyor.
+```cpp
+const unsigned char font[] = {
+    #embed "font.bin"
+};
+```
+
+Preprocessor bunu şuna açıyor:
+```cpp
+const unsigned char font[] = { 0x00, 0x1f, 0x3e, /* ... */ };
+```
+
+Yani sonuç `xxd` ile aynı ama fark şurada: derleyici bunun bir dosya olduğunu biliyor. Dosyayı doğrudan belleğe okuyup diziyi tek seferde kuruyor. Yani 320000 ifadeyi parse etmiyor. Bu yüzden de `xxd` yöntemine göre daha hızlı derleniyor.
+
+Burada dikkat edilmesi gereken nokta: **#embed** sadece virgüllü byte listesi üretir. Süslü parantezleri, tip adını, `;` ifadesini biz yazacağız. 
+
+Örnek:
+```cpp
+#include <print>
+#include <cstddef>
+
+// --- 1) En basit hali ------------------------------------------------
+const unsigned char logo[] = {
+    #embed "logo.bin"     // dosyanın byte'ları virgülle ayrılmış gelir
+};                        // süslü parantez ve ; SENİN sorumluluğun
+
+// Boyutu her zamanki gibi hesaplarsın, ayrı bir _len değişkeni yok
+constexpr std::size_t logo_len = sizeof(logo);
+
+
+// --- 2) constexpr yapabilirsin -> derleme zamanında kullanılabilir ---
+constexpr unsigned char firmware[] = {
+    #embed "app.bin"
+};
+
+// Derleme zamanında checksum hesapla:
+constexpr unsigned checksum() {
+    unsigned s = 0;
+    for (unsigned char b : firmware) s += b;   // döngü derleyicide koşar
+    return s;
+}
+static_assert(checksum() != 0);   // build sırasında doğrulanır
+
+
+// --- 3) Dosya yoksa graceful davran ----------------------------------
+#if __has_embed("opsiyonel.bin")          // dosya var mı? (0 / 1 / 2 döner)
+    const unsigned char opsiyonel[] = { #embed "opsiyonel.bin" };
+    constexpr bool var = true;
+#else
+    const unsigned char opsiyonel[] = { 0 };
+    constexpr bool var = false;
+#endif
+
+
+int main() {
+    std::println("logo: {} byte", logo_len);
+    std::println("opsiyonel dosya: {}", var ? "var" : "yok");
+}
+```
+
+**Faydalı Parametreler**
+- #embed birkaç ayar alıyor, köşeli parantez içinde:
+```cpp
+// limit: dosyanın sadece ilk N byte'ını al
+const unsigned char header_only[] = {
+    #embed "image.png" limit(8)      // sadece PNG imzası (8 byte)
+};
+
+// if_empty: dosya boşsa bunu koy (boş {} geçersiz C++ olurdu)
+const unsigned char veri[] = {
+    #embed "belki_bos.bin" if_empty(0)
+};
+
+// prefix / suffix: listenin başına/sonuna eleman ekle
+const unsigned char metin[] = {
+    #embed "mesaj.txt" suffix(, '\0')   // string olarak kullanmak için
+};                                       // sonuna null terminator ekledik
+```
+- Buradaki `limit` özellikle işimize yarayabilir, bir dosyanın sadece headerını gömüp magic byte kontrolü yapılabilir. 
+
+
+
+
+
+
 
 [↑ İçindekiler](#icindekiler)
